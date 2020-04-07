@@ -1,0 +1,13 @@
+%!WordxTex_TexContent DO NOT DELETE THIS LINE
+\documentclass{article}
+%param.sty a fontsize adjust automatically.
+\usepackage{param}
+\usepackage{textcomp}
+\usepackage[version=4]{mhchem}
+\pagestyle{empty}
+\normalsize
+
+\begin{document}
+%%sample
+%\ce{A + B <=>[HP][LP] C}
+\end{document}

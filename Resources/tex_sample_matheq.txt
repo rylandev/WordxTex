@@ -1,0 +1,13 @@
+%!WordxTex_TexContent DO NOT DELETE THIS LINE
+\documentclass{article}
+%%param.sty for font adjustment.
+\usepackage{param}
+\pagestyle{empty}
+\normalsize
+
+\begin{document}
+\[
+%%sample
+%\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
+\]
+\end{document}

@@ -1,0 +1,16 @@
+\renewcommand{\normalsize}{\fontsize{%%WordxTex_Font_Symbol}{%%WordxTex_Font_Symbol}\selectfont}
+%%WordxTex_Equation_Font_Symbal
+\DeclareMathSizes{8}{8}{7}{5}
+\DeclareMathSizes{9}{9}{7}{5}
+\DeclareMathSizes{10}{10}{8}{5}
+\DeclareMathSizes{11}{11}{9}{7}
+\DeclareMathSizes{12}{12}{9}{7}
+\DeclareMathSizes{14}{14}{10}{7}
+\DeclareMathSizes{16}{16}{12}{8}
+\DeclareMathSizes{18}{18}{14}{10}
+\DeclareMathSizes{20}{20}{16}{12}
+\DeclareMathSizes{24}{24}{18}{14}
+\DeclareMathSizes{28}{28}{20}{16}
+\DeclareMathSizes{32}{32}{24}{18}
+\DeclareMathSizes{36}{36}{28}{20}
+\DeclareMathSizes{40}{40}{32}{24}

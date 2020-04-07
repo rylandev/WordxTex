@@ -1,0 +1,3 @@
+[submodule "ICSharpCode.TextEditor"]
+	path = ICSharpCode.TextEditor
+	url = https://github.com/megakraken/ICSharpCode.TextEditor.git

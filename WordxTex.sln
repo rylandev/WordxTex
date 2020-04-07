@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordxTex", "WordxTex.csproj", "{EE42B4EE-81D4-4053-941A-26286DE0616E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.TextEditor", "ICSharpCode.TextEditor\ICSharpCode.TextEditor\ICSharpCode.TextEditor.csproj", "{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D09D0F09-2D2F-4130-B504-8454A5B763A0}
+	EndGlobalSection
+EndGlobal

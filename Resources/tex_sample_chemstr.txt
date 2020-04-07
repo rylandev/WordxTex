@@ -1,0 +1,16 @@
+%!WordxTex_TexContent DO NOT DELETE THIS LINE
+\documentclass{article}
+%%param.sty for font adjustment.
+\usepackage{param}
+\usepackage{chemfig}
+\usepackage[active,tightpage]{preview}
+\pagestyle{empty}
+\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
+\normalsize
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}
+
+\begin{document}
+%%sample
+%\chemfig{*6(-=-=-=)}
+\end{document}

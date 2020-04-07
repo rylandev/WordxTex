@@ -1,0 +1,82 @@
+%!WordxTex_TexContent DO NOT DELETE THIS LINE
+\documentclass{article}
+%%param.sty for font adjustment.
+\usepackage{param}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{mathpazo}
+\usepackage{filecontents}
+\begin{filecontents*}{0.5atm_ethanal_aq.dat}
+L V
+0.936 0.94056
+0.94 0.943692
+0.944 0.946891
+0.948 0.950161
+0.952 0.953502
+0.956 0.956918
+0.96 0.960409
+0.964 0.963978
+0.968 0.967628
+0.972 0.97136
+0.976 0.975177
+0.98 0.979081
+\end{filecontents*}
+\begin{filecontents*}{1atm_ethanal_aq.dat}
+L V
+0.936 0.939197
+0.94 0.942424
+0.944 0.945718
+0.948 0.949082
+0.952 0.952517
+0.956 0.956025
+0.96 0.959607
+0.964 0.963267
+0.968 0.967005
+0.972 0.970824
+0.976 0.974725
+0.98 0.978712
+\end{filecontents*}
+\begin{filecontents*}{2atm_ethanal_aq.dat}
+L V
+0.936 0.937751
+0.94 0.94108
+0.944 0.944476
+0.948 0.94794
+0.952 0.951475
+0.956 0.955081
+0.96 0.958761
+0.964 0.962516
+0.968 0.966348
+0.972 0.970259
+0.976 0.97425
+0.98 0.978324
+\end{filecontents*}
+\pgfplotsset{width=0.95\textwidth,compat=1.13}
+\pagestyle{empty}
+\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
+\normalsize
+
+\begin{document}
+\color{black}
+ \begin{tikzpicture}[scale=0.97]
+  \begin{axis}[xlabel={L},ylabel={G},xmin=0.938,xmax=0.975,ymin=0.938,ymax=0.975,
+  xtick distance=0.01,
+  ytick distance=0.01,legend columns=2,legend pos=north west] 
+   \addplot+[mark size=0.05pt,color=blue] table {0.5atm_ethanal_aq.dat};
+   \addlegendentry{$0.5$ atm}
+   \addplot+[mark size=0.05pt,color=orange] table {1atm_ethanal_aq.dat};
+   \addlegendentry{$1$ atm}
+   \addplot+[mark size=0.05pt,color=gray] table {2atm_ethanal_aq.dat};
+   \addlegendentry{$2$ atm}
+   \addplot+[mark size=0pt,sharp plot,color=green] coordinates { (0,0) (1,1) };
+
+   \addplot+[sharp plot,dashed,color=blue] coordinates { (0.93,0.9638) (0.9638,0.9638)(0.9638,0.93) };
+   \addplot+[sharp plot,dashed,color=orange] coordinates { (0.93,0.9562) (0.9562,0.9562)(0.9562,0.93) };
+   \addplot+[sharp plot,dashed,color=gray] coordinates { (0.93,0.9475) (0.9475,0.9475)(0.9475,0.93) };
+
+   \node [pin=115:{0.9475}] at (0.9475,0.9475) {};
+   \node [pin=155:{0.9562}] at (0.9562,0.9562) {};
+   \node [pin=300:{0.9638}] at (0.9638,0.9638) {};
+  \end{axis}
+ \end{tikzpicture}
+\end{document}
