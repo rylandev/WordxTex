@@ -1,9 +1,8 @@
 %!WordxTex_TexContent DO NOT DELETE THIS LINE
-\documentclass{article}
+\documentclass{standalone}
 %%param.sty for font adjustment.
 \usepackage{param}
 \usepackage{pgfplots}
-\usepackage{pgfplotstable}
 \usepackage{mathpazo}
 \usepackage{filecontents}
 \begin{filecontents*}{0.5atm_ethanal_aq.dat}
@@ -52,7 +51,6 @@ L V
 0.98 0.978324
 \end{filecontents*}
 \pgfplotsset{width=0.95\textwidth,compat=1.13}
-\pagestyle{empty}
 \renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
 \normalsize
 

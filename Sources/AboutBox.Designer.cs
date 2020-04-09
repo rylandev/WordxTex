@@ -88,7 +88,6 @@
             this.labelProductName.TabIndex = 19;
             this.labelProductName.Text = "WordxTex";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelProductName.Click += new System.EventHandler(this.labelProductName_Click);
             // 
             // labelVersion
             // 
@@ -101,7 +100,6 @@
             this.labelVersion.TabIndex = 0;
             this.labelVersion.Text = "Version 0.1 Beta";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelVersion.Click += new System.EventHandler(this.labelVersion_Click);
             // 
             // labelCopyright
             // 
@@ -126,7 +124,6 @@
             this.labelCompanyName.TabIndex = 22;
             this.labelCompanyName.Text = "Rylan Dong";
             this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelCompanyName.Click += new System.EventHandler(this.labelCompanyName_Click);
             // 
             // textBoxDescription
             // 
@@ -168,8 +165,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "AboutBox1";
-            this.Load += new System.EventHandler(this.AboutBox_Load);
+            this.Text = "About";
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();

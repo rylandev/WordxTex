@@ -112,19 +112,5 @@ namespace WordxTex
             this.Close();
         }
 
-        private void labelCompanyName_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void AboutBox_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelVersion_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

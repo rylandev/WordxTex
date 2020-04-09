@@ -19,17 +19,6 @@ namespace WordxTex
         public static string Compile_Info;
         public bool Program_Check;
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
-        {
-            LaTexEdt CodeEditor = new LaTexEdt();
-            CodeEditor.updateSRC("%!WordxTex_TexContent DO NOT DELETE THIS LINE\n");
-            CodeEditor.ShowDialog();
-        }
-
-        private void button3_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
 
         private void btn_baselineU_Click(object sender, RibbonControlEventArgs e)
         {
@@ -69,7 +58,7 @@ namespace WordxTex
                 return;
             //if (SelectedObj[0].AlternativeText.Length == 0)
             //    return;
-            LaTexEdt CodeEditor = new LaTexEdt();
+            LaTexEdt CodeEditor = new LaTexEdt(false);
             CodeEditor.updateSRC(SelectedObjFirst.AlternativeText);
             CodeEditor.ShowDialog();
         }
@@ -79,9 +68,9 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt();
+            LaTexEdt CodeEditor = new LaTexEdt(false);
             CodeEditor.updateSRC(Resources.tex_sample_chemstr);
-            CodeEditor.ShowDialog();
+            CodeEditor.Show();
         }
 
         private void btn_insChemReact_Click(object sender, RibbonControlEventArgs e)
@@ -89,9 +78,9 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt();
+            LaTexEdt CodeEditor = new LaTexEdt(false);
             CodeEditor.updateSRC(Resources.tex_sample_chemrea);
-            CodeEditor.ShowDialog();
+            CodeEditor.Show();
         }
 
         private void btn_insMath_Click(object sender, RibbonControlEventArgs e)
@@ -99,9 +88,9 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt();
+            LaTexEdt CodeEditor = new LaTexEdt(false);
             CodeEditor.updateSRC(Resources.tex_sample_matheq);
-            CodeEditor.ShowDialog();
+            CodeEditor.Show();
         }
 
         public static string get_param_value(string param, string name)
@@ -124,25 +113,25 @@ namespace WordxTex
             Box_Font_Fx = DD_Font_fx.SelectedItem.Tag.ToString();
             Compile_Info = DD_Complier.SelectedItem.Tag.ToString() + ";" + DD_Grapher.SelectedItem.Tag.ToString();
             check_programs();
-            Globals.ThisAddIn.Application.WindowSelectionChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
+            Globals.ThisAddIn.Application.WindowSelectionChange += delegate (Selection Sel)
+            {
+                if (Program_Check == false)
+                {
+                    btn_edit.Enabled = false;
+                    return;
+                }
+                //Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+                if (Globals.ThisAddIn.Application.Selection.Type == WdSelectionType.wdSelectionIP)
+                {
+                    btn_edit.Enabled = false;
+                    return;
+                }
+                EditContent_check(Sel);
+            };
+            //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
         }
 
 
-        private void ThisDocument_SelectionChange(Selection Sel)
-        {
-            if (Program_Check == false)
-            {
-                btn_edit.Enabled = false;
-                return;
-            }
-            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            if (ThisDoc.Application.Selection.Type == WdSelectionType.wdSelectionIP)
-            {
-                btn_edit.Enabled = false;
-                return;
-            }
-            EditContent_check(Sel);
-        }
         private void EditContent_check(Selection Sel)
         {
             string AlTex;
@@ -213,7 +202,7 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt();
+            LaTexEdt CodeEditor = new LaTexEdt(false);
             CodeEditor.updateSRC(Resources.tex_sample_plot);
             CodeEditor.ShowDialog();
         }
@@ -226,7 +215,8 @@ namespace WordxTex
         private void btn_about_Click(object sender, RibbonControlEventArgs e)
         {
             AboutBox KA = new AboutBox();
-            KA.Show();
+            KA.ShowDialog();
+            //KA.Show();
         }
 
         private void DD_Complier_SelectionChanged(object sender, RibbonControlEventArgs e)
@@ -264,7 +254,7 @@ namespace WordxTex
             }
             else
             {
-                lb_gen_tip.Label = "Fatal: Format ingroup!";
+                lb_gen_tip.Label = "Fatal: Improper combination!";
                 btn_insertTex.Enabled = false;
                 btn_insChemStruct.Enabled = false;
                 btn_insMath.Enabled = false;
@@ -292,6 +282,65 @@ namespace WordxTex
                     return fullPath;
             }
             return null;
+        }
+
+        private void btn_batchEdit_Click(object sender, RibbonControlEventArgs e)
+        {
+            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+            if (ThisDoc == null || ThisDoc.ReadOnly)
+                return;
+            int IntlStart = ThisDoc.Application.Selection.Start;
+            int IntlEnd = ThisDoc.Application.Selection.End;
+            ThisDoc.Application.Selection.SetRange(ThisDoc.Application.Selection.Start, ThisDoc.Application.Selection.Start + 1);
+
+            Selection TexObj = ThisDoc.Application.Selection;
+            Range TexItem = null;
+            bool if_TexObject = false;
+
+            InlineShape TexObjInline = null;
+            int TexObjInline_prvstart = 0;
+            int TexObjInline_start = 1;
+
+            if (TexObj.InlineShapes.Count != 0)
+            {
+                TexObjInline = TexObj.InlineShapes[1];
+                if_TexObject = (TexObjInline.Type != WdInlineShapeType.wdInlineShapePicture);
+                if_TexObject = (if_TexObject && TexObjInline.AlternativeText.Contains("WordxTex_TexContent"));
+            }
+            else
+            {
+                TexItem = ThisDoc.Application.Selection.GoToNext(WdGoToItem.wdGoToGraphic);
+                ThisDoc.Application.Selection.SetRange(ThisDoc.Application.Selection.Start, ThisDoc.Application.Selection.Start + 1);
+                TexObj = ThisDoc.Application.Selection;
+            }
+            while ((!if_TexObject) && TexObj.InlineShapes.Count != 0 && ((TexObjInline_prvstart != TexObjInline_start)))
+            {
+                TexObjInline_prvstart = TexObjInline_start;
+                TexItem = ThisDoc.Application.Selection.GoToNext(WdGoToItem.wdGoToGraphic);
+                ThisDoc.Application.Selection.SetRange(ThisDoc.Application.Selection.Start, ThisDoc.Application.Selection.Start + 1);
+                TexObj = ThisDoc.Application.Selection;
+                TexObjInline_start = TexObj.Start;
+                TexObjInline = TexObj.InlineShapes[1];
+                if_TexObject = (TexObjInline.Type != WdInlineShapeType.wdInlineShapePicture);
+                if_TexObject = (if_TexObject && TexObjInline.AlternativeText.Contains("WordxTex_TexContent"));
+            };
+            if (if_TexObject)
+            {
+                LaTexEdt CodeEditor = new LaTexEdt(true);
+                CodeEditor.updateSRC(TexObjInline.AlternativeText);
+                CodeEditor.Show();
+            }
+            else
+            {
+                ThisDoc.Application.Selection.SetRange(IntlStart, IntlEnd);
+            }
+        }
+
+        private void btn_insertTex_Click(object sender, RibbonControlEventArgs e)
+        {
+            LaTexEdt CodeEditor = new LaTexEdt(false);
+            CodeEditor.updateSRC("%!WordxTex_TexContent DO NOT DELETE THIS LINE\n");
+            CodeEditor.Show();
         }
     }
 }

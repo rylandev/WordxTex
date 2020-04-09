@@ -182,25 +182,26 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
+    <Compile Include="Sources\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.Designer.cs">
+    <Compile Include="Sources\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="LaTexEdt.cs">
+    <Compile Include="Sources\ProgramQueue.cs" />
+    <Compile Include="Sources\LaTexEdt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LaTexEdt.Designer.cs">
+    <Compile Include="Sources\LaTexEdt.Designer.cs">
       <DependentUpon>LaTexEdt.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="AboutBox.resx">
+    <EmbeddedResource Include="Sources\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LaTexEdt.resx">
+    <EmbeddedResource Include="Sources\LaTexEdt.resx">
       <DependentUpon>LaTexEdt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -213,7 +214,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Ribbon.resx">
+    <EmbeddedResource Include="Sources\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -225,10 +226,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Ribbon.cs">
+    <Compile Include="Sources\Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ribbon.Designer.cs">
+    <Compile Include="Sources\Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
