@@ -51,7 +51,14 @@
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl14 = this.Factory.CreateRibbonDropDownItem();
             this.tab1 = this.Factory.CreateRibbonTab();
             this.WordxTex = this.Factory.CreateRibbonGroup();
+            this.btn_insertTex = this.Factory.CreateRibbonButton();
+            this.btn_insMath = this.Factory.CreateRibbonButton();
+            this.btn_insChemReact = this.Factory.CreateRibbonButton();
+            this.btn_insChemStruct = this.Factory.CreateRibbonButton();
+            this.btn_insplot = this.Factory.CreateRibbonButton();
             this.separator3 = this.Factory.CreateRibbonSeparator();
+            this.btn_edit = this.Factory.CreateRibbonButton();
+            this.btn_batchEdit = this.Factory.CreateRibbonButton();
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.DD_Complier = this.Factory.CreateRibbonDropDown();
             this.DD_Grapher = this.Factory.CreateRibbonDropDown();
@@ -59,20 +66,13 @@
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.DD_Font_fx = this.Factory.CreateRibbonDropDown();
-            this.separator4 = this.Factory.CreateRibbonSeparator();
-            this.tab_WordxTex = this.Factory.CreateRibbonTab();
-            this.btn_insertTex = this.Factory.CreateRibbonButton();
-            this.btn_insMath = this.Factory.CreateRibbonButton();
-            this.btn_insChemReact = this.Factory.CreateRibbonButton();
-            this.btn_insChemStruct = this.Factory.CreateRibbonButton();
-            this.btn_insplot = this.Factory.CreateRibbonButton();
-            this.btn_edit = this.Factory.CreateRibbonButton();
-            this.btn_batchEdit = this.Factory.CreateRibbonButton();
             this.btn_about = this.Factory.CreateRibbonButton();
+            this.separator4 = this.Factory.CreateRibbonSeparator();
             this.btn_baselineU = this.Factory.CreateRibbonButton();
             this.btn_baselineDn = this.Factory.CreateRibbonButton();
             this.btn_baselineRt = this.Factory.CreateRibbonButton();
             this.btn_settings = this.Factory.CreateRibbonButton();
+            this.tab_WordxTex = this.Factory.CreateRibbonTab();
             this.tab1.SuspendLayout();
             this.WordxTex.SuspendLayout();
             this.tab_WordxTex.SuspendLayout();
@@ -111,9 +111,79 @@
             this.WordxTex.Label = "WordxTex";
             this.WordxTex.Name = "WordxTex";
             // 
+            // btn_insertTex
+            // 
+            this.btn_insertTex.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btn_insertTex.Image = global::WordxTex.Properties.Resources.Button_Insert_Tex;
+            this.btn_insertTex.KeyTip = "I";
+            this.btn_insertTex.Label = "Insert TeX";
+            this.btn_insertTex.Name = "btn_insertTex";
+            this.btn_insertTex.ScreenTip = "Insert LaTex Content.";
+            this.btn_insertTex.ShowImage = true;
+            this.btn_insertTex.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insertTex_Click);
+            // 
+            // btn_insMath
+            // 
+            this.btn_insMath.Image = global::WordxTex.Properties.Resources.Button_Insert_MathEQ;
+            this.btn_insMath.Label = "Math Equation";
+            this.btn_insMath.Name = "btn_insMath";
+            this.btn_insMath.ScreenTip = "Insert Math Equation.";
+            this.btn_insMath.ShowImage = true;
+            this.btn_insMath.ShowLabel = false;
+            this.btn_insMath.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insMath_Click);
+            // 
+            // btn_insChemReact
+            // 
+            this.btn_insChemReact.Image = global::WordxTex.Properties.Resources.Button_Insert_MathChemRea;
+            this.btn_insChemReact.Label = "Chemical Reaction";
+            this.btn_insChemReact.Name = "btn_insChemReact";
+            this.btn_insChemReact.ScreenTip = "Insert Chemical Expression";
+            this.btn_insChemReact.ShowImage = true;
+            this.btn_insChemReact.ShowLabel = false;
+            this.btn_insChemReact.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insChemReact_Click);
+            // 
+            // btn_insChemStruct
+            // 
+            this.btn_insChemStruct.Image = global::WordxTex.Properties.Resources.Button_Insert_MathChemStru;
+            this.btn_insChemStruct.Label = "Chemical Structure";
+            this.btn_insChemStruct.Name = "btn_insChemStruct";
+            this.btn_insChemStruct.ScreenTip = "Insert Chemical Structure";
+            this.btn_insChemStruct.ShowImage = true;
+            this.btn_insChemStruct.ShowLabel = false;
+            this.btn_insChemStruct.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insChemStruct_Click);
+            // 
+            // btn_insplot
+            // 
+            this.btn_insplot.Image = global::WordxTex.Properties.Resources.Button_Insert_Graph;
+            this.btn_insplot.Label = "Plot";
+            this.btn_insplot.Name = "btn_insplot";
+            this.btn_insplot.ScreenTip = "Insert Plot Graph";
+            this.btn_insplot.ShowImage = true;
+            this.btn_insplot.ShowLabel = false;
+            this.btn_insplot.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insplot_Click);
+            // 
             // separator3
             // 
             this.separator3.Name = "separator3";
+            // 
+            // btn_edit
+            // 
+            this.btn_edit.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btn_edit.Enabled = false;
+            this.btn_edit.Image = global::WordxTex.Properties.Resources.Button_Edit;
+            this.btn_edit.Label = "Edit";
+            this.btn_edit.Name = "btn_edit";
+            this.btn_edit.ShowImage = true;
+            this.btn_edit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_edit_Click);
+            // 
+            // btn_batchEdit
+            // 
+            this.btn_batchEdit.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btn_batchEdit.Label = "Batch Edit";
+            this.btn_batchEdit.Name = "btn_batchEdit";
+            this.btn_batchEdit.ShowImage = true;
+            this.btn_batchEdit.Visible = false;
+            this.btn_batchEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_batchEdit_Click);
             // 
             // separator1
             // 
@@ -210,75 +280,6 @@
             this.DD_Font_fx.ShowLabel = false;
             this.DD_Font_fx.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.DD_Font_fx_SelectionChanged);
             // 
-            // separator4
-            // 
-            this.separator4.Name = "separator4";
-            // 
-            // tab_WordxTex
-            // 
-            this.tab_WordxTex.Label = "WordxTex";
-            this.tab_WordxTex.Name = "tab_WordxTex";
-            // 
-            // btn_insertTex
-            // 
-            this.btn_insertTex.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btn_insertTex.Image = global::WordxTex.Properties.Resources.Button_Insert_Tex;
-            this.btn_insertTex.Label = "Insert ";
-            this.btn_insertTex.Name = "btn_insertTex";
-            this.btn_insertTex.ShowImage = true;
-            this.btn_insertTex.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insertTex_Click);
-            // 
-            // btn_insMath
-            // 
-            this.btn_insMath.Image = global::WordxTex.Properties.Resources.Button_Insert_MathEQ;
-            this.btn_insMath.Label = "Math Equation";
-            this.btn_insMath.Name = "btn_insMath";
-            this.btn_insMath.ShowImage = true;
-            this.btn_insMath.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insMath_Click);
-            // 
-            // btn_insChemReact
-            // 
-            this.btn_insChemReact.Image = global::WordxTex.Properties.Resources.Button_Insert_MathChemRea;
-            this.btn_insChemReact.Label = "Chemical Reaction";
-            this.btn_insChemReact.Name = "btn_insChemReact";
-            this.btn_insChemReact.ShowImage = true;
-            this.btn_insChemReact.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insChemReact_Click);
-            // 
-            // btn_insChemStruct
-            // 
-            this.btn_insChemStruct.Image = global::WordxTex.Properties.Resources.Button_Insert_MathChemStru;
-            this.btn_insChemStruct.Label = "Chemical Structure";
-            this.btn_insChemStruct.Name = "btn_insChemStruct";
-            this.btn_insChemStruct.ShowImage = true;
-            this.btn_insChemStruct.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insChemStruct_Click);
-            // 
-            // btn_insplot
-            // 
-            this.btn_insplot.Image = global::WordxTex.Properties.Resources.Button_Insert_Graph;
-            this.btn_insplot.Label = "Plot";
-            this.btn_insplot.Name = "btn_insplot";
-            this.btn_insplot.ShowImage = true;
-            this.btn_insplot.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insplot_Click);
-            // 
-            // btn_edit
-            // 
-            this.btn_edit.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btn_edit.Enabled = false;
-            this.btn_edit.Image = global::WordxTex.Properties.Resources.Button_Edit;
-            this.btn_edit.Label = "Edit";
-            this.btn_edit.Name = "btn_edit";
-            this.btn_edit.ShowImage = true;
-            this.btn_edit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_edit_Click);
-            // 
-            // btn_batchEdit
-            // 
-            this.btn_batchEdit.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btn_batchEdit.Label = "Batch Edit";
-            this.btn_batchEdit.Name = "btn_batchEdit";
-            this.btn_batchEdit.ShowImage = true;
-            this.btn_batchEdit.Visible = false;
-            this.btn_batchEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_batchEdit_Click);
-            // 
             // btn_about
             // 
             this.btn_about.Image = global::WordxTex.Properties.Resources.Button_About;
@@ -286,6 +287,10 @@
             this.btn_about.Name = "btn_about";
             this.btn_about.ShowImage = true;
             this.btn_about.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_about_Click);
+            // 
+            // separator4
+            // 
+            this.separator4.Name = "separator4";
             // 
             // btn_baselineU
             // 
@@ -319,6 +324,11 @@
             this.btn_settings.ShowImage = true;
             this.btn_settings.Visible = false;
             this.btn_settings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_settings_Click);
+            // 
+            // tab_WordxTex
+            // 
+            this.tab_WordxTex.Label = "WordxTex";
+            this.tab_WordxTex.Name = "tab_WordxTex";
             // 
             // Ribbon
             // 
@@ -368,7 +378,7 @@
     {
         internal Ribbon Ribbon1
         {
-            get { return this.GetRibbon<Ribbon>(); }
+            get { return this.GetRibbon<Ribbon>(); } 
         }
     }
 }

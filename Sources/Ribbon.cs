@@ -129,7 +129,7 @@ namespace WordxTex
                 }
                 EditContent_check(Sel);
             };
-            //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
+                //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
         }
 
 
@@ -164,56 +164,6 @@ namespace WordxTex
         private void btn_settings_Click(object sender, RibbonControlEventArgs e)
         {
             return;
-            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            string[] exeA = { "winver.exe" };
-            string[] exeArgs = { "" };
-            wTModule.ProgramQueue pQ = new wTModule.ProgramQueue(exeA, exeArgs);
-            pQ.ProgramsRunResult += delegate (object report, EventArgs ev)
-            {
-                MessageBox.Show(((wTModule.ProgramResult)report).execName);
-            };
-            Thread t = new Thread(new ThreadStart(pQ.Run));
-            //pQ.Run();
-            t.Start();
-            ThreadStart childref = new ThreadStart(threadT);
-            Thread childThread = new Thread(childref);
-            childThread.Start();
-            string str;
-            switch (ThisDoc.Application.Selection.Type)
-            {
-                case WdSelectionType.wdSelectionBlock:
-                    str = "block";
-                    break;
-                case WdSelectionType.wdSelectionColumn:
-                    str = "column";
-                    break;
-                case WdSelectionType.wdSelectionFrame:
-                    str = "frame";
-                    break;
-                case WdSelectionType.wdSelectionInlineShape:
-                    str = "inline shape";
-                    break;
-                case WdSelectionType.wdSelectionIP:
-                    str = "insertion point";
-                    break;
-                case WdSelectionType.wdSelectionNormal:
-                    str = "normal text";
-                    break;
-                case WdSelectionType.wdNoSelection:
-                    str = "no selection";
-                    break;
-                case WdSelectionType.wdSelectionRow:
-                    str = "row";
-                    break;
-                default:
-                    str = "(unknown)";
-                    break;
-            }
-            //ThisDoc.Application.Selection.Font.Size.ToString;
-            MessageBox.Show(str, "ShowSelectionType");
-            MessageBox.Show(Box_Font_Fx, "ShowSelectionType");
-            MessageBox.Show(ThisDoc.Application.Selection.Font.Size.ToString(), "ShowSelectionType");
-
         }
 
         private void btn_insplot_Click(object sender, RibbonControlEventArgs e)

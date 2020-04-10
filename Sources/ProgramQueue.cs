@@ -84,14 +84,8 @@ namespace WordxTex.wTModule
         public void execProcess()
         {
             string uelogs = "";
-            //    int CurProgramNum = 0;
-            //    int MaxProgramNum = 0;
-            //    string[] uePrograms = new string[] { };
             string execPath = uePrograms[CurProgramNum];
             string args = ueProgramsArgs[CurProgramNum];
-            //runLogs = runLogs + "\n" + execPath + " " + args + "\n";
-            //Control.CheckForIllegalCrossThreadCalls = false;
-            //args = args.Trim();
             using (Process Rprocess = new Process())
             {
                 Rprocess.StartInfo.UseShellExecute = false; //不使用CMD

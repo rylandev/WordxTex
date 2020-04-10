@@ -194,12 +194,11 @@ namespace WordxTex.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to %!WordxTex_TexContent DO NOT DELETE THIS LINE
-        ///\documentclass{article}
-        ///%param.sty a fontsize adjust automatically.
+        ///\documentclass{standalone}
+        ///%%param.sty for font adjustment.
         ///\usepackage{param}
         ///\usepackage{textcomp}
         ///\usepackage[version=4]{mhchem}
-        ///\pagestyle{empty}
         ///\normalsize
         ///
         ///\begin{document}
@@ -215,13 +214,11 @@ namespace WordxTex.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to %!WordxTex_TexContent DO NOT DELETE THIS LINE
-        ///\documentclass{article}
+        ///\documentclass{standalone}
         ///%%param.sty for font adjustment.
         ///\usepackage{param}
         ///\usepackage{chemfig}
         ///\usepackage[active,tightpage]{preview}
-        ///\pagestyle{empty}
-        ///\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
         ///\normalsize
         ///\PreviewEnvironment{tikzpicture}
         ///\setlength\PreviewBorder{0pt}
@@ -239,16 +236,15 @@ namespace WordxTex.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to %!WordxTex_TexContent DO NOT DELETE THIS LINE
-        ///\documentclass{article}
+        ///\documentclass{minimal}
         ///%%param.sty for font adjustment.
         ///\usepackage{param}
-        ///\pagestyle{empty}
         ///\normalsize
         ///
         ///\begin{document}
         ///\[
         ///%%sample
-        ///%\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
+        ///\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
         ///\]
         ///\end{document}.
         /// </summary>
@@ -260,11 +256,10 @@ namespace WordxTex.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to %!WordxTex_TexContent DO NOT DELETE THIS LINE
-        ///\documentclass{article}
+        ///\documentclass{standalone}
         ///%%param.sty for font adjustment.
         ///\usepackage{param}
         ///\usepackage{pgfplots}
-        ///\usepackage{pgfplotstable}
         ///\usepackage{mathpazo}
         ///\usepackage{filecontents}
         ///\begin{filecontents*}{0.5atm_ethanal_aq.dat}
@@ -282,7 +277,9 @@ namespace WordxTex.Properties {
         ///0.976 0.975177
         ///0.98 0.979081
         ///\end{filecontents*}
-        ///\begin{filecontents*}{1atm [rest of string was truncated]&quot;;.
+        ///\begin{filecontents*}{1atm_ethanal_aq.dat}
+        ///L V
+        ///0. [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tex_sample_plot {
             get {

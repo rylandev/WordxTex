@@ -39,108 +39,6 @@ namespace WordxTex
         string TargetImgFile;
         string TexPreFile = "";
         public Process Rprocess = new Process();//创建进程对象   
-                                                //public void StartProcess(string[] execParam)
-                                                //{
-                                                //    string execPath = execParam[0];
-                                                //    string args = execParam[1];
-                                                //    runLogs = runLogs + "\n" + execPath + " " + args + "\n";
-                                                //    Control.CheckForIllegalCrossThreadCalls = false;
-                                                //    //args = args.Trim();
-                                                //    Rprocess = new Process();
-                                                //    Process_Timer.Start();
-                                                //    Rprocess.StartInfo.UseShellExecute = false; //不使用CMD
-                                                //    Rprocess.StartInfo.CreateNoWindow = true; //不显示黑色窗口
-                                                //    Rprocess.OutputDataReceived += new DataReceivedEventHandler(Log_Receive);
-                                                //    Rprocess.StartInfo.RedirectStandardOutput = true;
-                                                //    Rprocess.ErrorDataReceived += new DataReceivedEventHandler(Log_Receive);
-                                                //    Rprocess.StartInfo.RedirectStandardError = true;
-                                                //    Rprocess.StartInfo.FileName = execPath;
-                                                //    Rprocess.StartInfo.Arguments = args;
-                                                //    Rprocess.EnableRaisingEvents = true;
-                                                //    Rprocess.Exited += new EventHandler(ProcessInterate);
-                                                //    //Rprocess.Exited += delegate (object sender, EventArgs e)
-                                                //    //{
-                                                //    //};            
-                                                //    //Rprocess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
-                                                //    //{                
-                                                //    //});
-                                                //    Rprocess.Start();
-                                                //    Rprocess.BeginOutputReadLine();
-                                                //    Rprocess.BeginErrorReadLine();
-                                                //}
-                                                //private void Log_Receive(object sender, DataReceivedEventArgs e)
-                                                //{
-                                                //    string logs = "";
-
-        //    try
-        //    {
-        //        logs = e.Data;
-        //    }
-        //    catch (System.Exception)
-        //    {
-
-        //    }
-        //    logsbox.Text = logsbox.Text + "\n" + logs;
-        //    runLogs = runLogs + "\n" + logs;
-        //}
-        //private void ProcessInterate(object sender, EventArgs e)
-        //{
-        //    string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
-        //    int shapePosition = 0;
-        //    InlineShape inDocPic;
-        //    if (((Process)sender).ExitCode != 0)
-        //    {
-        //        MessageBox.Show("See Log", "ERR");
-        //        btn_gen.Enabled = true;
-        //        return;
-        //    }
-        //    if (CpQueue.Terminated())
-        //    {
-        //        Process_Timer.Stop();
-        //        btn_gen.Enabled = true;
-        //        Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-        //        //if (imgFile.Length == 0)
-        //        //    return;
-        //        if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
-        //        {
-        //            shapePosition = ThisDoc.Application.Selection.Font.Position;
-        //            ThisDoc.Application.Selection.Delete();
-        //        }
-        //        if (Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "grapher") == (string)"dvipng")
-        //        {
-        //            string pngvRes = Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "pngvRes");
-        //            //Image pngDocLocal = Image.FromFile(imgFile);
-        //            //float docAwidth = pngDocLocal.Width / float.Parse(pngvRes);
-        //            //float docAheight = pngDocLocal.Height / float.Parse(pngvRes);
-        //            int pngdpi = int.Parse(pngvRes);
-        //            //inDocPic.Width = 72 * docAwidth;
-        //            //inDocPic.Height = 72 * docAheight;
-        //            //pngDocLocal.Dispose();
-        //            Bitmap bMp = (Bitmap)Image.FromFile(TargetImgFile);
-        //            bMp.SetResolution(pngdpi, pngdpi);
-        //            string R_imgFile = tempDir + "\\" + "_" + pngvRes + ".png";
-        //            bMp.Save(R_imgFile, ImageFormat.Png);
-        //            bMp.Dispose();
-        //            inDocPic = ThisDoc.InlineShapes.AddPicture(R_imgFile);
-        //        }
-        //        else
-        //        {
-        //            inDocPic = ThisDoc.InlineShapes.AddPicture(TargetImgFile);
-        //        }
-        //        inDocPic.AlternativeText = TexPreFile;
-        //        inDocPic.Select();
-        //        ThisDoc.Application.Selection.Font.Position = shapePosition;
-        //        if (cb_AutoClose.Checked)
-        //            this.Close();
-        //        runLogs.Trim();
-        //        logsbox.Text = runLogs;
-        //        //MessageBox.Show(((Process)sender).StartInfo.FileName + ": " + ((Process)sender).ExitCode.ToString());
-        //    }
-        //    else
-        //    {
-        //        StartProcess(CpQueue.ExecProgramIteration());
-        //    }
-        //}
 
         private void btn_gen_Click(object sender, EventArgs e)
         {
@@ -194,10 +92,12 @@ namespace WordxTex
                 Thread thrd_c;
 
                 //写入日志框
-                int logsBoxCount = logsbox.Text.Length; 
+                int logsBoxCount = logsbox.Text.Length;
                 string programExecParam = ((wTModule.ProgramResult)report).execName + " " + ((wTModule.ProgramResult)report).execArgs;
                 logsbox.Text = logsbox.Text + programExecParam + "\n";
                 logsbox.Text = logsbox.Text + (((wTModule.ProgramResult)report).execLogs);
+                logsbox.Select(logsbox.Text.Length, 0);
+                
                 if (((wTModule.ProgramResult)report).exitCode != 0)
                 {
                     //错误运行
@@ -214,7 +114,6 @@ namespace WordxTex
                     string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
                     int shapePosition = 0;
                     InlineShape inDocPic;
-                    Process_Timer.Stop();
 
                     if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
                     {
@@ -222,7 +121,7 @@ namespace WordxTex
                         ThisDoc.Application.Selection.Delete(); //删除选中 的数据
                     }
                     if (Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "grapher") == (string)"dvipng")
-                    { 
+                    {
                         //dvipng 产出PNG分辨率为72dpi,将生成的png图片转换分辨率
                         string pngvRes = Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "pngvRes");
                         int pngdpi = int.Parse(pngvRes);
@@ -255,7 +154,6 @@ namespace WordxTex
         private void LaTexEdt_Load(object sender, EventArgs e)
         {
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            box_run_max_time.Value = Process_Timer.Interval / 1000;
             string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
             for (int i = 0; i < Directory.GetFiles(tempDir).ToList().Count; i++)
                 File.Delete(Directory.GetFiles(tempDir)[i]); //清空临时目录
@@ -280,19 +178,7 @@ namespace WordxTex
                 fs.Close();
             };
         }
-        private void Process_Timer_Tick(object sender, EventArgs e)
-        {
-            Process_Timer.Stop();
-            if (Rprocess.HasExited)
-                return;
-            Rprocess.Kill();
-        }
-
-        private void box_run_max_time_ValueChanged(object sender, EventArgs e)
-        {
-            Process_Timer.Interval = (int)box_run_max_time.Value * 1000;
-        }
-
+        //批量模式按钮 VVV
         private void btn_nxtTeX_Click(object sender, EventArgs e)
         {
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
@@ -309,10 +195,18 @@ namespace WordxTex
                 return;
             if (!SelectedObjFirst.AlternativeText.Contains("WordxTex_TexContent"))
                 return;
-            //if (SelectedObj[0].AlternativeText.Length == 0)
-            //    return;
             texCodeBox.Clear();
             texCodeBox.Text = SelectedObjFirst.AlternativeText;
+        }
+
+        private void btn_prvTex_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logsbox_TextChanged(object sender, EventArgs e)
+        {
+            logsbox.Select(logsbox.Text.Length,0);
         }
     }
 }
