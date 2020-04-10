@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Threading;
 using System.IO;
 using WordxTex.Properties;
 using Microsoft.Office.Interop.Word;
@@ -155,10 +156,28 @@ namespace WordxTex
 
             }
         }
-
+        private void threadT()
+        {
+            Thread.Sleep(10000);
+            MessageBox.Show("AAC");
+        }
         private void btn_settings_Click(object sender, RibbonControlEventArgs e)
         {
+            return;
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+            string[] exeA = { "winver.exe" };
+            string[] exeArgs = { "" };
+            wTModule.ProgramQueue pQ = new wTModule.ProgramQueue(exeA, exeArgs);
+            pQ.ProgramsRunResult += delegate (object report, EventArgs ev)
+            {
+                MessageBox.Show(((wTModule.ProgramResult)report).execName);
+            };
+            Thread t = new Thread(new ThreadStart(pQ.Run));
+            //pQ.Run();
+            t.Start();
+            ThreadStart childref = new ThreadStart(threadT);
+            Thread childThread = new Thread(childref);
+            childThread.Start();
             string str;
             switch (ThisDoc.Application.Selection.Type)
             {
