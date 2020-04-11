@@ -16,12 +16,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 
 namespace WordxTex
 {
     public partial class LaTexEdt : Form
     {
-        public LaTexEdt(bool BatchMode,string Code,int caretStart,int caretEnd)
+        public LaTexEdt(bool BatchMode, string Code, int caretStart, int caretEnd)
         {
             InitializeComponent();
             if (BatchMode) //批量模式（测试中）
@@ -42,7 +43,7 @@ namespace WordxTex
                 texCodeBox.ActiveTextAreaControl.SelectionManager.ClearSelection();
                 texCodeBox.ActiveTextAreaControl.SelectionManager.SetSelection(
                     new ICSharpCode.TextEditor.Document.DefaultSelection(
-                        texCodeBox.Document, texCodeBox.Document.OffsetToPosition(caretStart), 
+                        texCodeBox.Document, texCodeBox.Document.OffsetToPosition(caretStart),
                         texCodeBox.Document.OffsetToPosition(caretEnd)
                         ));
                 texCodeBox.Refresh();
@@ -58,7 +59,7 @@ namespace WordxTex
             btn_gen.Enabled = false; //防止按多次
             logsbox.Clear(); //清空日志框，防溢出
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            string occupied_id = "param";
+            string occupied_id = "param_" + Guid.NewGuid().ToString();
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
             string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
@@ -173,6 +174,25 @@ namespace WordxTex
             if (false == System.IO.Directory.Exists(tempDir))
                 System.IO.Directory.CreateDirectory(tempDir);
             latex_style_gen(tempDir); //生成自动模板
+            this.FormClosing += LaTexEdt_FormClosing;
+            this.Deactivate += LaTexEdt_Deactivate;
+            this.Activated += delegate (object RSender, EventArgs me)
+            {
+                this.Opacity = 1;
+            };
+
+        }
+
+        private void LaTexEdt_Deactivate(object sender, EventArgs e)
+        {
+            this.Opacity = 0.5;
+            //throw new NotImplementedException();
+        }
+
+        private void LaTexEdt_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Deactivate -= LaTexEdt_Deactivate;
+            //throw new NotImplementedException();
         }
 
         private void latex_style_gen(string destDir)

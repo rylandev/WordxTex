@@ -301,6 +301,12 @@
   <ItemGroup>
     <None Include="Resources\btn_tex.emf" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tex_sample_awesymbol.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Button_Insert_symbol.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

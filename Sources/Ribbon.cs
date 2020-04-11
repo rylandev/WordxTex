@@ -11,6 +11,7 @@ using Microsoft.Office.Tools.Ribbon;
 using System.Windows.Forms;
 using Microsoft.Office.Tools.Word;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Core;
 
 namespace WordxTex
 {
@@ -57,10 +58,7 @@ namespace WordxTex
             InlineShape SelectedObjFirst = SelectedObj[1];
             if (!SelectedObjFirst.AlternativeText.Contains("WordxTex_TexContent"))
                 return;
-            //if (SelectedObj[0].AlternativeText.Length == 0)
-            //    return;
-            LaTexEdt CodeEditor = new LaTexEdt(false, SelectedObjFirst.AlternativeText,0,0);
-            //CodeEditor.updateSRC(SelectedObjFirst.AlternativeText);
+            LaTexEdt CodeEditor = new LaTexEdt(false, SelectedObjFirst.AlternativeText, 0, 0);
             CodeEditor.ShowDialog();
         }
 
@@ -69,8 +67,7 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_chemstr,289,321);
-            //CodeEditor.updateSRC(Resources.tex_sample_chemstr);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_chemstr, 289, 321);
             CodeEditor.Show();
         }
 
@@ -80,7 +77,6 @@ namespace WordxTex
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
             LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_chemrea, 217, 252);
-            //CodeEditor.updateSRC(Resources.tex_sample_chemrea);
             CodeEditor.Show();
         }
 
@@ -90,7 +86,6 @@ namespace WordxTex
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
             LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_matheq, 163, 218);
-            //CodeEditor.updateSRC(Resources.tex_sample_matheq);
             CodeEditor.Show();
         }
 
@@ -121,7 +116,6 @@ namespace WordxTex
                     btn_edit.Enabled = false;
                     return;
                 }
-                //Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
                 if (Globals.ThisAddIn.Application.Selection.Type == WdSelectionType.wdSelectionIP)
                 {
                     btn_edit.Enabled = false;
@@ -129,7 +123,6 @@ namespace WordxTex
                 }
                 EditContent_check(Sel);
             };
-            //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
         }
 
 
@@ -308,6 +301,46 @@ namespace WordxTex
         private void btn_insertTex_Click(object sender, RibbonControlEventArgs e)
         {
             LaTexEdt CodeEditor = new LaTexEdt(false, "%!WordxTex_TexContent DO NOT DELETE THIS LINE\n", 46, 46);
+            CodeEditor.Show();
+        }
+
+        private void btn_ins_symbol_Click(object sender, RibbonControlEventArgs e)
+        {
+            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+            string colorMode = "rgb";
+            string colorParam = "0,0,0";
+            switch (ThisDoc.Application.Selection.Font.TextColor.Type)
+            {
+                case MsoColorType.msoColorTypeRGB:
+                    System.Drawing.Color unCorcSelectedColor = System.Drawing.Color.FromArgb(ThisDoc.Application.Selection.Font.TextColor.RGB);
+                    System.Drawing.Color selectedColor = System.Drawing.Color.FromArgb(unCorcSelectedColor.B, unCorcSelectedColor.G, unCorcSelectedColor.R);
+                    colorMode = "rgb";
+                    colorParam =
+                        selectedColor.R.ToString() + "," +
+                        selectedColor.G.ToString() + "," +
+                        selectedColor.B.ToString();
+                    break;
+                case MsoColorType.msoColorTypeCMYK:
+                    colorMode = "cmyk";
+                    colorParam =
+                    ThisDoc.Application.Selection.Font.TextColor.Cyan.ToString() + "," +
+                    ThisDoc.Application.Selection.Font.TextColor.Yellow.ToString() + "," +
+                    ThisDoc.Application.Selection.Font.TextColor.Magenta.ToString() + "," +
+                    ThisDoc.Application.Selection.Font.TextColor.Black.ToString();
+                    break;
+
+                default:
+                    break;
+            }
+            int sspoint = 236 + colorMode.Length + colorParam.Length;
+            int eepoint = 278 + colorMode.Length + colorParam.Length;
+            if (ThisDoc == null || ThisDoc.ReadOnly)
+                return;
+            string sym_tex = Resources.tex_sample_awesymbol;
+            sym_tex = sym_tex.Replace("%%cMode", colorMode);
+            sym_tex = sym_tex.Replace("%%cParam", colorParam);
+            LaTexEdt CodeEditor = new LaTexEdt(false, sym_tex, sspoint, eepoint);
+            //CodeEditor.updateSRC(Resources.tex_sample_matheq);
             CodeEditor.Show();
         }
     }

@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cb_AutoClose = new System.Windows.Forms.CheckBox();
             this.texCodeBox = new ICSharpCode.TextEditor.TextEditorControl();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.btn_prvTex = new System.Windows.Forms.Button();
             this.btn_nxtTeX = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -104,15 +103,8 @@
             this.texCodeBox.ShowTabs = true;
             this.texCodeBox.ShowVRuler = false;
             this.texCodeBox.Size = new System.Drawing.Size(418, 150);
+            this.texCodeBox.TabIndent = 1;
             this.texCodeBox.TabIndex = 1;
-            // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(0, 0);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 289);
-            this.splitter1.TabIndex = 10;
-            this.splitter1.TabStop = false;
             // 
             // btn_prvTex
             // 
@@ -145,7 +137,6 @@
             this.ClientSize = new System.Drawing.Size(434, 311);
             this.Controls.Add(this.btn_nxtTeX);
             this.Controls.Add(this.btn_prvTex);
-            this.Controls.Add(this.splitter1);
             this.Controls.Add(this.cb_AutoClose);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.logsbox);
@@ -155,7 +146,9 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 350);
             this.Name = "LaTexEdt";
-            this.Text = "Code Editor";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.Text = "TeX Code Editor";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LaTexEdt_Load);
             this.ResumeLayout(false);
@@ -170,7 +163,6 @@
         private System.Windows.Forms.RichTextBox logsbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cb_AutoClose;
-        private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Button btn_prvTex;
         private System.Windows.Forms.Button btn_nxtTeX;
     }

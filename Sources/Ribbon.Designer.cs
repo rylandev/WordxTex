@@ -55,6 +55,7 @@
             this.btn_insMath = this.Factory.CreateRibbonButton();
             this.btn_insChemReact = this.Factory.CreateRibbonButton();
             this.btn_insChemStruct = this.Factory.CreateRibbonButton();
+            this.btn_ins_symbol = this.Factory.CreateRibbonButton();
             this.btn_insplot = this.Factory.CreateRibbonButton();
             this.separator3 = this.Factory.CreateRibbonSeparator();
             this.btn_edit = this.Factory.CreateRibbonButton();
@@ -91,6 +92,7 @@
             this.WordxTex.Items.Add(this.btn_insMath);
             this.WordxTex.Items.Add(this.btn_insChemReact);
             this.WordxTex.Items.Add(this.btn_insChemStruct);
+            this.WordxTex.Items.Add(this.btn_ins_symbol);
             this.WordxTex.Items.Add(this.btn_insplot);
             this.WordxTex.Items.Add(this.separator3);
             this.WordxTex.Items.Add(this.btn_edit);
@@ -152,6 +154,16 @@
             this.btn_insChemStruct.ShowLabel = false;
             this.btn_insChemStruct.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_insChemStruct_Click);
             // 
+            // btn_ins_symbol
+            // 
+            this.btn_ins_symbol.Image = global::WordxTex.Properties.Resources.Button_Insert_symbol;
+            this.btn_ins_symbol.Label = "Insert Symbol";
+            this.btn_ins_symbol.Name = "btn_ins_symbol";
+            this.btn_ins_symbol.ScreenTip = "Insert Awesome Symbol";
+            this.btn_ins_symbol.ShowImage = true;
+            this.btn_ins_symbol.ShowLabel = false;
+            this.btn_ins_symbol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_ins_symbol_Click);
+            // 
             // btn_insplot
             // 
             this.btn_insplot.Image = global::WordxTex.Properties.Resources.Button_Insert_Graph;
@@ -182,7 +194,6 @@
             this.btn_batchEdit.Label = "Batch Edit";
             this.btn_batchEdit.Name = "btn_batchEdit";
             this.btn_batchEdit.ShowImage = true;
-            this.btn_batchEdit.Visible = false;
             this.btn_batchEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_batchEdit_Click);
             // 
             // separator1
@@ -322,7 +333,6 @@
             this.btn_settings.Label = "Settings";
             this.btn_settings.Name = "btn_settings";
             this.btn_settings.ShowImage = true;
-            this.btn_settings.Visible = false;
             this.btn_settings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btn_settings_Click);
             // 
             // tab_WordxTex
@@ -372,6 +382,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown DD_Grapher;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel lb_gen_tip;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_batchEdit;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btn_ins_symbol;
     }
 
     partial class ThisRibbonCollection
@@ -380,5 +391,5 @@
         {
             get { return this.GetRibbon<Ribbon>(); } 
         }
-    }
+    } 
 }

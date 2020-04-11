@@ -153,6 +153,16 @@ namespace WordxTex.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Button_Insert_symbol {
+            get {
+                object obj = ResourceManager.GetObject("Button_Insert_symbol", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Button_Insert_Tex {
             get {
                 object obj = ResourceManager.GetObject("Button_Insert_Tex", resourceCulture);
@@ -189,6 +199,26 @@ namespace WordxTex.Properties {
         internal static string tex_fontsize_style {
             get {
                 return ResourceManager.GetString("tex_fontsize_style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %!WordxTex_TexContent DO NOT DELETE THIS LINE
+        ///\documentclass{minimal}
+        ///%%param.sty for font adjustment.
+        ///\usepackage{param}
+        ///\usepackage{color,xcolor}
+        ///\usepackage{fontawesome}
+        ///\definecolor{upmain}{%%cMode}{%%cParam}
+        ///\normalsize
+        ///\begin{document}
+        ///%%sample
+        ///%\textcolor{upmain}{\faEnvelope}
+        ///\end{document}.
+        /// </summary>
+        internal static string tex_sample_awesymbol {
+            get {
+                return ResourceManager.GetString("tex_sample_awesymbol", resourceCulture);
             }
         }
         
@@ -244,7 +274,7 @@ namespace WordxTex.Properties {
         ///\begin{document}
         ///\[
         ///%%sample
-        ///\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
+        ///%\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
         ///\]
         ///\end{document}.
         /// </summary>
@@ -262,6 +292,11 @@ namespace WordxTex.Properties {
         ///\usepackage{pgfplots}
         ///\usepackage{mathpazo}
         ///\usepackage{filecontents}
+        ///\pgfplotsset{width=0.95\textwidth,compat=1.13}
+        ///\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
+        ///\normalsize
+        ///
+        ///%%Sample Data Content Start:--------------- 
         ///\begin{filecontents*}{0.5atm_ethanal_aq.dat}
         ///L V
         ///0.936 0.94056
@@ -269,17 +304,7 @@ namespace WordxTex.Properties {
         ///0.944 0.946891
         ///0.948 0.950161
         ///0.952 0.953502
-        ///0.956 0.956918
-        ///0.96 0.960409
-        ///0.964 0.963978
-        ///0.968 0.967628
-        ///0.972 0.97136
-        ///0.976 0.975177
-        ///0.98 0.979081
-        ///\end{filecontents*}
-        ///\begin{filecontents*}{1atm_ethanal_aq.dat}
-        ///L V
-        ///0. [rest of string was truncated]&quot;;.
+        ///0.956 0.956918 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tex_sample_plot {
             get {
