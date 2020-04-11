@@ -155,7 +155,6 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 350);
             this.Name = "LaTexEdt";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Code Editor";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LaTexEdt_Load);
@@ -166,10 +165,6 @@
 
         #endregion
 
-        public void updateSRC(string Code)
-        {
-            this.texCodeBox.Text = Code;
-        }
         private System.Windows.Forms.Button btn_gen;
         private ICSharpCode.TextEditor.TextEditorControl texCodeBox;
         private System.Windows.Forms.RichTextBox logsbox;

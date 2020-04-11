@@ -7,6 +7,6 @@
 \begin{document}
 \[
 %%sample
-\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
+%\int_{x}^{y} \sqrt[3]{\exp(z)}\, \mathrm{d}z
 \]
 \end{document}

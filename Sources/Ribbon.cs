@@ -59,8 +59,8 @@ namespace WordxTex
                 return;
             //if (SelectedObj[0].AlternativeText.Length == 0)
             //    return;
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC(SelectedObjFirst.AlternativeText);
+            LaTexEdt CodeEditor = new LaTexEdt(false, SelectedObjFirst.AlternativeText,0,0);
+            //CodeEditor.updateSRC(SelectedObjFirst.AlternativeText);
             CodeEditor.ShowDialog();
         }
 
@@ -69,8 +69,8 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC(Resources.tex_sample_chemstr);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_chemstr,289,321);
+            //CodeEditor.updateSRC(Resources.tex_sample_chemstr);
             CodeEditor.Show();
         }
 
@@ -79,8 +79,8 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC(Resources.tex_sample_chemrea);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_chemrea, 217, 252);
+            //CodeEditor.updateSRC(Resources.tex_sample_chemrea);
             CodeEditor.Show();
         }
 
@@ -89,8 +89,8 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC(Resources.tex_sample_matheq);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_matheq, 163, 218);
+            //CodeEditor.updateSRC(Resources.tex_sample_matheq);
             CodeEditor.Show();
         }
 
@@ -129,7 +129,7 @@ namespace WordxTex
                 }
                 EditContent_check(Sel);
             };
-                //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
+            //new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowSelectionChangeEventHandler(ThisDocument_SelectionChange);
         }
 
 
@@ -171,8 +171,8 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC(Resources.tex_sample_plot);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_plot, 0, 0);
+            //CodeEditor.updateSRC(Resources.tex_sample_plot);
             CodeEditor.ShowDialog();
         }
 
@@ -295,8 +295,8 @@ namespace WordxTex
             };
             if (if_TexObject)
             {
-                LaTexEdt CodeEditor = new LaTexEdt(true);
-                CodeEditor.updateSRC(TexObjInline.AlternativeText);
+                LaTexEdt CodeEditor = new LaTexEdt(true, TexObjInline.AlternativeText, 0, 0);
+                //CodeEditor.updateSRC(TexObjInline.AlternativeText);
                 CodeEditor.Show();
             }
             else
@@ -307,8 +307,7 @@ namespace WordxTex
 
         private void btn_insertTex_Click(object sender, RibbonControlEventArgs e)
         {
-            LaTexEdt CodeEditor = new LaTexEdt(false);
-            CodeEditor.updateSRC("%!WordxTex_TexContent DO NOT DELETE THIS LINE\n");
+            LaTexEdt CodeEditor = new LaTexEdt(false, "%!WordxTex_TexContent DO NOT DELETE THIS LINE\n", 46, 46);
             CodeEditor.Show();
         }
     }

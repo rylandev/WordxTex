@@ -21,7 +21,7 @@ namespace WordxTex
 {
     public partial class LaTexEdt : Form
     {
-        public LaTexEdt(bool BatchMode)
+        public LaTexEdt(bool BatchMode,string Code,int caretStart,int caretEnd)
         {
             InitializeComponent();
             if (BatchMode) //批量模式（测试中）
@@ -35,6 +35,19 @@ namespace WordxTex
                 btn_prvTex.Visible = false;
             }
             this.TopMost = true;
+            this.texCodeBox.Text = Code;
+            this.Shown += delegate (object sender, EventArgs evt)
+            {
+                texCodeBox.ActiveTextAreaControl.Caret.Position = texCodeBox.Document.OffsetToPosition(caretStart);
+                texCodeBox.ActiveTextAreaControl.SelectionManager.ClearSelection();
+                texCodeBox.ActiveTextAreaControl.SelectionManager.SetSelection(
+                    new ICSharpCode.TextEditor.Document.DefaultSelection(
+                        texCodeBox.Document, texCodeBox.Document.OffsetToPosition(caretStart), 
+                        texCodeBox.Document.OffsetToPosition(caretEnd)
+                        ));
+                texCodeBox.Refresh();
+                texCodeBox.Focus();
+            };
         }
         string TargetImgFile;
         string TexPreFile = "";
@@ -97,7 +110,7 @@ namespace WordxTex
                 logsbox.Text = logsbox.Text + programExecParam + "\n";
                 logsbox.Text = logsbox.Text + (((wTModule.ProgramResult)report).execLogs);
                 logsbox.Select(logsbox.Text.Length, 0);
-                
+
                 if (((wTModule.ProgramResult)report).exitCode != 0)
                 {
                     //错误运行
@@ -206,7 +219,7 @@ namespace WordxTex
 
         private void logsbox_TextChanged(object sender, EventArgs e)
         {
-            logsbox.Select(logsbox.Text.Length,0);
+            logsbox.Select(logsbox.Text.Length, 0);
         }
     }
 }

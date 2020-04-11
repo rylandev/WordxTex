@@ -5,6 +5,11 @@
 \usepackage{pgfplots}
 \usepackage{mathpazo}
 \usepackage{filecontents}
+\pgfplotsset{width=0.95\textwidth,compat=1.13}
+\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
+\normalsize
+
+%%Sample Data Content Start:--------------- 
 \begin{filecontents*}{0.5atm_ethanal_aq.dat}
 L V
 0.936 0.94056
@@ -50,13 +55,12 @@ L V
 0.976 0.97425
 0.98 0.978324
 \end{filecontents*}
-\pgfplotsset{width=0.95\textwidth,compat=1.13}
-\renewcommand{\normalsize}{\fontsize{10}{10}\selectfont}
-\normalsize
+%%Sample Data Content End:--------------- 
 
 \begin{document}
 \color{black}
- \begin{tikzpicture}[scale=0.97]
+ \begin{tikzpicture}[scale=0.97] 
+ %%Sample Plot Start:--------------- 
   \begin{axis}[xlabel={L},ylabel={G},xmin=0.938,xmax=0.975,ymin=0.938,ymax=0.975,
   xtick distance=0.01,
   ytick distance=0.01,legend columns=2,legend pos=north west] 
@@ -76,5 +80,6 @@ L V
    \node [pin=155:{0.9562}] at (0.9562,0.9562) {};
    \node [pin=300:{0.9638}] at (0.9638,0.9638) {};
   \end{axis}
+ %%Sample Plot End:--------------- 
  \end{tikzpicture}
 \end{document}
