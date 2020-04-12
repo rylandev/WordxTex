@@ -34,16 +34,16 @@
     <PublishUrl>F:\T\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.4.8.0</ApplicationVersion>
+    <ApplicationVersion>0.5.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>WordxTex</ProductName>
-    <PublisherName />
-    <SupportUrl />
+    <PublisherName>WordxTex</PublisherName>
+    <SupportUrl>https://github.com/rylandev/WordxTex</SupportUrl>
     <FriendlyName>WordxTex</FriendlyName>
-    <OfficeApplicationDescription>123</OfficeApplicationDescription>
+    <OfficeApplicationDescription>A TeX Add-in word </OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
