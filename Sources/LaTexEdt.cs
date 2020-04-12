@@ -1,21 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordxTex.Properties;
-using System.Windows.Forms;
+﻿using Microsoft.Office.Interop.Word;
+using System;
 using System.Diagnostics;
-using Microsoft.Office.Interop.Word;
-using ICSharpCode.TextEditor;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms;
+using WordxTex.Properties;
 
 namespace WordxTex
 {
@@ -104,7 +96,7 @@ namespace WordxTex
                 Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
                 logsbox.Text += "\n" + (string)logs;
                 if (logsbox.Text.Length > 5)
-                    logsbox.Select(logsbox.Text.Length , logsbox.Text.Length);
+                    logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
                 logsbox.ScrollToCaret();
             };
             CpQueue.ProgramsRunResult += delegate (object reports, EventArgs ev) //接收运行结果

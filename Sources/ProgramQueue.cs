@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace WordxTex.wTModule
 {
@@ -56,7 +51,7 @@ namespace WordxTex.wTModule
             if (RunAll)
                 CurProgramNum = 0;
             object[] prResult = new object[uePrograms.Length];
-            for(int i=0;i<uePrograms.Length;i++)
+            for (int i = 0; i < uePrograms.Length; i++)
             {
                 prResult[i] = exeProcessWithRslt();
                 ExecProgramIteration();
@@ -102,7 +97,7 @@ namespace WordxTex.wTModule
                     {
                     }
                     uelogs = uelogs + "\n" + logs;
-                    ProgramsRunLogStepRs(logs,new EventArgs());
+                    ProgramsRunLogStepRs(logs, new EventArgs());
                 };
                 Rprocess.StartInfo.RedirectStandardOutput = true;
                 Rprocess.ErrorDataReceived += delegate (object sender, DataReceivedEventArgs e)
