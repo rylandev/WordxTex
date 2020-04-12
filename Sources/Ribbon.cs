@@ -133,21 +133,13 @@ namespace WordxTex
             {
                 AlTex = Sel.InlineShapes[1].AlternativeText;
             }
-            catch (System.NullReferenceException e)
-            {
-                btn_edit.Enabled = false;
-                return;
-            }
-            catch (COMException e)
+            catch (System.Exception)
             {
                 btn_edit.Enabled = false;
                 return;
             }
             if (AlTex.Contains("WordxTex_TexContent"))
                 btn_edit.Enabled = true;
-            {
-
-            }
         }
         private void threadT()
         {

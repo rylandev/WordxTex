@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Office.Interop.Word;
 using ICSharpCode.TextEditor;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Reflection;
@@ -100,67 +99,74 @@ namespace WordxTex
             CpQueue.RunAll = false; //阻止命令队列自动运行下一个
             ThreadStart thrdstart = new ThreadStart(CpQueue.Run); //使用另一线程运行
             Thread thrd = new Thread(thrdstart);
-            CpQueue.ProgramsRunResult += delegate (object report, EventArgs ev) //接收运行结果
+            CpQueue.ProgramsRunLogStepRs += delegate (object logs, EventArgs evt)
             {
                 Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
-                Thread thrd_c;
-
-                //写入日志框
-                int logsBoxCount = logsbox.Text.Length;
-                string programExecParam = ((wTModule.ProgramResult)report).execName + " " + ((wTModule.ProgramResult)report).execArgs;
-                logsbox.Text = logsbox.Text + programExecParam + "\n";
-                logsbox.Text = logsbox.Text + (((wTModule.ProgramResult)report).execLogs);
-                logsbox.Select(logsbox.Text.Length, 0);
-
-                if (((wTModule.ProgramResult)report).exitCode != 0)
+                logsbox.Text += "\n" + (string)logs;
+                if (logsbox.Text.Length > 5)
+                    logsbox.Select(logsbox.Text.Length , logsbox.Text.Length);
+                logsbox.ScrollToCaret();
+            };
+            CpQueue.ProgramsRunResult += delegate (object reports, EventArgs ev) //接收运行结果
+            {
+                Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
+                Object[] execReports = (Object[])reports;
+                logsbox.Clear();
+                for (int i = 0; i < execReports.Length; i++)
                 {
-                    //错误运行
-                    logsbox.Select(logsBoxCount, programExecParam.Length);
-                    logsbox.SelectionColor = Color.Red; //标红
-                    btn_gen.Enabled = true;//恢复按钮
-                    return; //停止运行
+                    wTModule.ProgramResult oReport = (wTModule.ProgramResult)execReports[i];
+                    //写入日志框
+                    int logsBoxCount = logsbox.Text.Length;
+                    string programExecParam = "[" + (i + 1).ToString() + "/" + execReports.Length + "] " + oReport.execName + " " + oReport.execArgs;
+                    logsbox.Text += programExecParam + "\n";
+                    logsbox.Text += oReport.execLogs;
+                    if (oReport.exitCode != 0)
+                    {
+                        //错误运行
+                        logsbox.Select(logsBoxCount, programExecParam.Length);
+                        logsbox.SelectionColor = Color.Red; //标红
+                        btn_gen.Enabled = true;//恢复按钮
+                        return; //停止运行
+                    }
+                    if (logsbox.Text.Length > 5)
+                        logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
+                    logsbox.ScrollToCaret();
                 }
+                Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+                //完成运行队列
+                string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
+                int shapePosition = 0;
+                InlineShape inDocPic;
 
-                if (((wTModule.ProgramResult)report).theLastProgram)
+                if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
                 {
-                    Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-                    //完成运行队列
-                    string tempDir = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
-                    int shapePosition = 0;
-                    InlineShape inDocPic;
-
-                    if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
-                    {
-                        shapePosition = ThisDoc.Application.Selection.Font.Position;
-                        ThisDoc.Application.Selection.Delete(); //删除选中 的数据
-                    }
-                    if (Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "grapher") == (string)"dvipng")
-                    {
-                        //dvipng 产出PNG分辨率为72dpi,将生成的png图片转换分辨率
-                        string pngvRes = Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "pngvRes");
-                        int pngdpi = int.Parse(pngvRes);
-                        Bitmap bMp = (Bitmap)Image.FromFile(TargetImgFile);
-                        bMp.SetResolution(pngdpi, pngdpi);
-                        string R_imgFile = tempDir + "\\" + "_" + pngvRes + ".png";
-                        bMp.Save(R_imgFile, ImageFormat.Png);
-                        bMp.Dispose();
-                        inDocPic = ThisDoc.InlineShapes.AddPicture(R_imgFile);
-                    }
-                    else
-                    {
-                        //svg直接插入
-                        inDocPic = ThisDoc.InlineShapes.AddPicture(TargetImgFile);
-                    }
-                    inDocPic.AlternativeText = TexPreFile; //写入Tex数据
-                    inDocPic.Select(); //选择新插入的图片
-                    ThisDoc.Application.Selection.Font.Position = shapePosition; //基线还原
-                    if (cb_AutoClose.Checked) //检测自动关闭
-                        this.Close();
-                    btn_gen.Enabled = true; //复原按钮
-                    return;
+                    shapePosition = ThisDoc.Application.Selection.Font.Position;
+                    ThisDoc.Application.Selection.Delete(); //删除选中 的数据
                 }
-                thrd_c = new Thread(thrdstart);
-                thrd_c.Start();
+                if (Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "grapher") == (string)"dvipng")
+                {
+                    //dvipng 产出PNG分辨率为72dpi,将生成的png图片转换分辨率
+                    string pngvRes = Ribbon.get_param_value(WordxTex.Ribbon.Compile_Info, "pngvRes");
+                    int pngdpi = int.Parse(pngvRes);
+                    Bitmap bMp = (Bitmap)Image.FromFile(TargetImgFile);
+                    bMp.SetResolution(pngdpi, pngdpi);
+                    string R_imgFile = tempDir + "\\" + "_" + pngvRes + ".png";
+                    bMp.Save(R_imgFile, ImageFormat.Png);
+                    bMp.Dispose();
+                    inDocPic = ThisDoc.InlineShapes.AddPicture(R_imgFile);
+                }
+                else
+                {
+                    //svg直接插入
+                    inDocPic = ThisDoc.InlineShapes.AddPicture(TargetImgFile);
+                }
+                inDocPic.AlternativeText = TexPreFile; //写入Tex数据
+                inDocPic.Select(); //选择新插入的图片
+                ThisDoc.Application.Selection.Font.Position = shapePosition; //基线还原
+                if (cb_AutoClose.Checked) //检测自动关闭
+                    this.Close();
+                btn_gen.Enabled = true; //复原按钮
+                return;
             };
             thrd.Start();
         }

@@ -11,6 +11,7 @@ namespace WordxTex.wTModule
     public class ProgramQueue : System.Object
     {
         public event EventHandler ProgramsRunResult;
+        public event EventHandler ProgramsRunLogStepRs;
         int CurProgramNum = 0;
         int MaxProgramNum = 0;
         string[] uePrograms = new string[] { };
@@ -54,12 +55,13 @@ namespace WordxTex.wTModule
         {
             if (RunAll)
                 CurProgramNum = 0;
-            do
+            object[] prResult = new object[uePrograms.Length];
+            for(int i=0;i<uePrograms.Length;i++)
             {
-                execProcess();
+                prResult[i] = exeProcessWithRslt();
                 ExecProgramIteration();
             }
-            while ((CurProgramNum < uePrograms.Length) && RunAll);
+            ProgramsRunResult(prResult, new EventArgs());
 
         }
         public string[] ExecProgramIteration()
@@ -80,7 +82,58 @@ namespace WordxTex.wTModule
             }
             return null;
         }
-
+        private ProgramResult exeProcessWithRslt()
+        {
+            string uelogs = "";
+            string execPath = uePrograms[CurProgramNum];
+            string args = ueProgramsArgs[CurProgramNum];
+            using (Process Rprocess = new Process())
+            {
+                Rprocess.StartInfo.UseShellExecute = false; //不使用CMD
+                Rprocess.StartInfo.CreateNoWindow = true; //不显示黑色窗口
+                Rprocess.OutputDataReceived += delegate (object sender, DataReceivedEventArgs e)
+                {
+                    string logs = "";
+                    try
+                    {
+                        logs = e.Data;
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                    uelogs = uelogs + "\n" + logs;
+                    ProgramsRunLogStepRs(logs,new EventArgs());
+                };
+                Rprocess.StartInfo.RedirectStandardOutput = true;
+                Rprocess.ErrorDataReceived += delegate (object sender, DataReceivedEventArgs e)
+                {
+                    string logs = "";
+                    try
+                    {
+                        logs = e.Data;
+                    }
+                    catch (System.Exception)
+                    {
+                    }
+                    uelogs = uelogs + "\n" + logs;
+                    ProgramsRunLogStepRs(logs, new EventArgs());
+                };
+                Rprocess.StartInfo.RedirectStandardError = true;
+                Rprocess.StartInfo.FileName = execPath;
+                Rprocess.StartInfo.Arguments = args;
+                Rprocess.EnableRaisingEvents = true;
+                if (!Rprocess.Start())
+                {
+                    return new ProgramResult(execPath, args, -1, Terminated(), MaxProgramNum - CurProgramNum);
+                }
+                Rprocess.BeginOutputReadLine();
+                Rprocess.BeginErrorReadLine();
+                Rprocess.WaitForExit();
+                ProgramResult pResult = new ProgramResult(execPath, args, Rprocess.ExitCode, Terminated(), MaxProgramNum - CurProgramNum);
+                pResult.execLogs = uelogs;
+                return pResult;
+            }
+        }
         public void execProcess()
         {
             string uelogs = "";
@@ -179,7 +232,5 @@ namespace WordxTex.wTModule
         }
 
     }
-
-
 
 }
