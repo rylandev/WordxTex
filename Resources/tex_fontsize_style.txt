@@ -1,4 +1,6 @@
 \renewcommand{\normalsize}{\fontsize{%%WordxTex_Font_Symbol}{%%WordxTex_Font_Symbol}\selectfont}
+\RequirePackage{color,xcolor}
+\definecolor{upmain}{%%cMode}{%%cParam}
 %%WordxTex_Equation_Font_Symbal
 \DeclareMathSizes{8}{8}{7}{5}
 \DeclareMathSizes{9}{9}{7}{5}

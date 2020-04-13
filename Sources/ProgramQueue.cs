@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace WordxTex.wTModule
 {
@@ -190,9 +191,24 @@ namespace WordxTex.wTModule
         int __programLeft = 0;
         bool __theLastProgram = true;
 
+        public static string GetFullPath(string fileName)
+        {
+            if (File.Exists(fileName))
+                return Path.GetFullPath(fileName);
+
+            var values = Environment.GetEnvironmentVariable("PATH");
+            foreach (var path in values.Split(Path.PathSeparator))
+            {
+                var fullPath = Path.Combine(path, fileName);
+                if (File.Exists(fullPath))
+                    return fullPath;
+            }
+            return null;
+        }
+
         public ProgramResult(string execName, string execArgs, int exitCode, bool theLastProgram, int programLeft)
         {
-            __execName = execName;
+            __execName = GetFullPath(execName);
             __execArgs = execArgs;
             __exitCode = exitCode;
             __theLastProgram = theLastProgram;

@@ -1,20 +1,18 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
-using System.Threading;
-using System.Windows.Forms;
 using WordxTex.Properties;
 
 namespace WordxTex
 {
     public partial class Ribbon
     {
-        public static string Box_Font_Fx;
-        public static string Compile_Info;
-        public bool Program_Check;
-
+        public bool programCheck;
+        public static string texFontStyle = "";
+        public static string compileInfo;
+        SettingsBox __settingsBox = new SettingsBox();
+        string __cp_info;
 
         private void btn_baselineU_Click(object sender, RibbonControlEventArgs e)
         {
@@ -38,7 +36,6 @@ namespace WordxTex
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
             ThisDoc.Application.Selection.Font.Position = ThisDoc.Application.Selection.Font.Position - 1;
-
         }
 
         private void btn_edit_Click(object sender, RibbonControlEventArgs e)
@@ -100,12 +97,21 @@ namespace WordxTex
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            Box_Font_Fx = DD_Font_fx.SelectedItem.Tag.ToString();
-            Compile_Info = DD_Complier.SelectedItem.Tag.ToString() + ";" + DD_Grapher.SelectedItem.Tag.ToString();
+            compileInfo = __settingsBox.program_exec_params;
+            __settingsBox.GenerChange += delegate (Object prg_params, EventArgs Evr)
+            {
+                compileInfo = (string)prg_params;
+                check_programs();
+            };
+            texFontStyle = __settingsBox.fontFx;
+            __settingsBox.fontFxChange += delegate (Object texFontFx_param, EventArgs Evr)
+            {
+                texFontStyle = (string)texFontFx_param;
+            };
             check_programs();
             Globals.ThisAddIn.Application.WindowSelectionChange += delegate (Selection Sel)
             {
-                if (Program_Check == false)
+                if (programCheck == false)
                 {
                     btn_edit.Enabled = false;
                     return;
@@ -115,12 +121,30 @@ namespace WordxTex
                     btn_edit.Enabled = false;
                     return;
                 }
-                EditContent_check(Sel);
+                editContentCheck(Sel);
+            };
+            btn_insMath.ShowLabel = __settingsBox.showLable;
+            btn_insChemReact.ShowLabel = __settingsBox.showLable;
+            btn_insChemStruct.ShowLabel = __settingsBox.showLable;
+            btn_ins_symbol.ShowLabel = __settingsBox.showLable;
+            btn_insplot.ShowLabel = __settingsBox.showLable;
+            btn_baselineU.ShowLabel = __settingsBox.showLable;
+            btn_baselineDn.ShowLabel = __settingsBox.showLable;
+            btn_baselineRt.ShowLabel = __settingsBox.showLable;
+            __settingsBox.showLableChange += delegate (Object checkStatus, EventArgs Evr)
+            {
+                btn_insMath.ShowLabel = (bool)checkStatus;
+                btn_insChemReact.ShowLabel = (bool)checkStatus;
+                btn_insChemStruct.ShowLabel = (bool)checkStatus;
+                btn_ins_symbol.ShowLabel = (bool)checkStatus;
+                btn_insplot.ShowLabel = (bool)checkStatus;
+                btn_baselineU.ShowLabel = (bool)checkStatus;
+                btn_baselineDn.ShowLabel = (bool)checkStatus;
+                btn_baselineRt.ShowLabel = (bool)checkStatus;
             };
         }
 
-
-        private void EditContent_check(Selection Sel)
+        private void editContentCheck(Selection Sel)
         {
             string AlTex;
             try
@@ -135,14 +159,9 @@ namespace WordxTex
             if (AlTex.Contains("WordxTex_TexContent"))
                 btn_edit.Enabled = true;
         }
-        private void threadT()
-        {
-            Thread.Sleep(10000);
-            MessageBox.Show("AAC");
-        }
         private void btn_settings_Click(object sender, RibbonControlEventArgs e)
         {
-            return;
+            __settingsBox.Show();
         }
 
         private void btn_insplot_Click(object sender, RibbonControlEventArgs e)
@@ -155,30 +174,15 @@ namespace WordxTex
             CodeEditor.ShowDialog();
         }
 
-        private void DD_Font_fx_SelectionChanged(object sender, RibbonControlEventArgs e)
-        {
-            Box_Font_Fx = DD_Font_fx.SelectedItem.Tag.ToString();
-        }
-
         private void btn_about_Click(object sender, RibbonControlEventArgs e)
         {
             AboutBox KA = new AboutBox();
             KA.ShowDialog();
-            //KA.Show();
         }
 
-        private void DD_Complier_SelectionChanged(object sender, RibbonControlEventArgs e)
-        {
-            check_programs();
-        }
-        private void DD_Grapher_SelectionChanged(object sender, RibbonControlEventArgs e)
-        {
-            check_programs();
-        }
         private void check_programs()
         {
-            Compile_Info = DD_Complier.SelectedItem.Tag.ToString() + ";" + DD_Grapher.SelectedItem.Tag.ToString();
-            if ((!ExistsOnPath(get_param_value(Compile_Info, "complier") + ".exe")) || (!ExistsOnPath(get_param_value(Compile_Info, "grapher") + ".exe")))
+            if ((!ExistsOnPath(get_param_value(compileInfo, "complier") + ".exe")) || (!ExistsOnPath(get_param_value(compileInfo, "grapher") + ".exe")))
             {
                 lb_gen_tip.Label = "Fatal: Programs invalid!";
                 btn_insertTex.Enabled = false;
@@ -186,19 +190,21 @@ namespace WordxTex
                 btn_insMath.Enabled = false;
                 btn_insChemReact.Enabled = false;
                 btn_insplot.Enabled = false;
-                Program_Check = false;
+                btn_ins_symbol.Enabled = false;
+                programCheck = false;
                 btn_edit.Enabled = false;
                 return;
             }
-            if (get_param_value(Compile_Info, "gaccept").Contains(get_param_value(Compile_Info, "ctarget")))
+            if (get_param_value(compileInfo, "gaccept").Contains(get_param_value(compileInfo, "ctarget")))
             {
-                lb_gen_tip.Label = "Ready: " + get_param_value(Compile_Info, "ctip") + get_param_value(Compile_Info, "gtip");
+                lb_gen_tip.Label = "Ready: " + get_param_value(compileInfo, "ctip") + get_param_value(compileInfo, "gtip");
                 btn_insertTex.Enabled = true;
                 btn_insChemStruct.Enabled = true;
                 btn_insMath.Enabled = true;
                 btn_insChemReact.Enabled = true;
                 btn_insplot.Enabled = true;
-                Program_Check = true;
+                btn_ins_symbol.Enabled = true;
+                programCheck = true;
             }
             else
             {
@@ -208,7 +214,8 @@ namespace WordxTex
                 btn_insMath.Enabled = false;
                 btn_insChemReact.Enabled = false;
                 btn_insplot.Enabled = false;
-                Program_Check = false;
+                btn_ins_symbol.Enabled = false;
+                programCheck = false;
                 btn_edit.Enabled = false;
             }
         }
@@ -292,40 +299,10 @@ namespace WordxTex
 
         private void btn_ins_symbol_Click(object sender, RibbonControlEventArgs e)
         {
-            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            string colorMode = "rgb";
-            string colorParam = "0,0,0";
-            switch (ThisDoc.Application.Selection.Font.TextColor.Type)
-            {
-                case MsoColorType.msoColorTypeRGB:
-                    System.Drawing.Color unCorcSelectedColor = System.Drawing.Color.FromArgb(ThisDoc.Application.Selection.Font.TextColor.RGB);
-                    System.Drawing.Color selectedColor = System.Drawing.Color.FromArgb(unCorcSelectedColor.B, unCorcSelectedColor.G, unCorcSelectedColor.R);
-                    colorMode = "rgb";
-                    colorParam =
-                        selectedColor.R.ToString() + "," +
-                        selectedColor.G.ToString() + "," +
-                        selectedColor.B.ToString();
-                    break;
-                case MsoColorType.msoColorTypeCMYK:
-                    colorMode = "cmyk";
-                    colorParam =
-                    ThisDoc.Application.Selection.Font.TextColor.Cyan.ToString() + "," +
-                    ThisDoc.Application.Selection.Font.TextColor.Yellow.ToString() + "," +
-                    ThisDoc.Application.Selection.Font.TextColor.Magenta.ToString() + "," +
-                    ThisDoc.Application.Selection.Font.TextColor.Black.ToString();
-                    break;
-
-                default:
-                    break;
-            }
-            int sspoint = 236 + colorMode.Length + colorParam.Length;
-            int eepoint = 278 + colorMode.Length + colorParam.Length;
+            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument; ;
             if (ThisDoc == null || ThisDoc.ReadOnly)
                 return;
-            string sym_tex = Resources.tex_sample_awesymbol;
-            sym_tex = sym_tex.Replace("%%cMode", colorMode);
-            sym_tex = sym_tex.Replace("%%cParam", colorParam);
-            LaTexEdt CodeEditor = new LaTexEdt(false, sym_tex, sspoint, eepoint);
+            LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_awesymbol, 183, 248);
             //CodeEditor.updateSRC(Resources.tex_sample_matheq);
             CodeEditor.Show();
         }

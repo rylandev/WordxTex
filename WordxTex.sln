@@ -7,20 +7,40 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordxTex", "WordxTex.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.TextEditor", "ICSharpCode.TextEditor\ICSharpCode.TextEditor\ICSharpCode.TextEditor.csproj", "{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DropDownControls", "DropDownControls\DropDownControls.csproj", "{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug (.NET 3.5)|Any CPU = Debug (.NET 3.5)|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		Release (.NET 3.5)|Any CPU = Release (.NET 3.5)|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug (.NET 3.5)|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug (.NET 3.5)|Any CPU.Build.0 = Debug|Any CPU
 		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release (.NET 3.5)|Any CPU.ActiveCfg = Release|Any CPU
+		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release (.NET 3.5)|Any CPU.Build.0 = Release|Any CPU
 		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE42B4EE-81D4-4053-941A-26286DE0616E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug (.NET 3.5)|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug (.NET 3.5)|Any CPU.Build.0 = Debug|Any CPU
 		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release (.NET 3.5)|Any CPU.ActiveCfg = Release|Any CPU
+		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release (.NET 3.5)|Any CPU.Build.0 = Release|Any CPU
 		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Debug (.NET 3.5)|Any CPU.ActiveCfg = Debug (.NET 3.5)|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Debug (.NET 3.5)|Any CPU.Build.0 = Debug (.NET 3.5)|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Release (.NET 3.5)|Any CPU.ActiveCfg = Release (.NET 3.5)|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Release (.NET 3.5)|Any CPU.Build.0 = Release (.NET 3.5)|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A0EB623-3EDD-4BA6-80EE-0FA61A708542}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

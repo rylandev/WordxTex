@@ -2,11 +2,9 @@
 \documentclass{minimal}
 %%param.sty for font adjustment.
 \usepackage{param}
-\usepackage{color,xcolor}
 \usepackage{fontawesome}
-\definecolor{upmain}{%%cMode}{%%cParam}
 \normalsize
 \begin{document}
-%%sample
+%%sample upmain is in param.sty
 %\textcolor{upmain}{\faEnvelope}
 \end{document}
