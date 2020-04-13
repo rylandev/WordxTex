@@ -1,3 +1,6 @@
 [submodule "ICSharpCode.TextEditor"]
 	path = ICSharpCode.TextEditor
 	url = https://github.com/megakraken/ICSharpCode.TextEditor.git
+[submodule "DropDownControls"]
+	path = DropDownControls
+	url = https://github.com/BradSmith1985/DropDownControls
