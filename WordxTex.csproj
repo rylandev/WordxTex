@@ -203,11 +203,11 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Sources\SettingsBox.cs">
+    <Compile Include="Sources\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Sources\SettingsBox.Designer.cs">
-      <DependentUpon>SettingsBox.cs</DependentUpon>
+    <Compile Include="Sources\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Sources\AboutBox.cs">
       <SubType>Form</SubType>
@@ -244,8 +244,8 @@
     <EmbeddedResource Include="Sources\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sources\SettingsBox.resx">
-      <DependentUpon>SettingsBox.cs</DependentUpon>
+    <EmbeddedResource Include="Sources\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

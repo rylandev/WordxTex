@@ -9,10 +9,7 @@ namespace WordxTex
     public partial class Ribbon
     {
         public bool programCheck;
-        public static string texFontStyle = "";
-        public static string compileInfo;
-        SettingsBox __settingsBox = new SettingsBox();
-        string __cp_info;
+        public static SettingsForm settingsBox = new SettingsForm();
 
         private void btn_baselineU_Click(object sender, RibbonControlEventArgs e)
         {
@@ -83,7 +80,8 @@ namespace WordxTex
         public static string get_param_value(string param, string name)
         {
             char spep = ';';
-            string[] CompileI = param.Split(spep); string[] K;
+            string[] CompileI = param.Split(spep);
+            string[] K;
             foreach (string cI in CompileI)
             {
                 K = cI.Split('=');
@@ -97,18 +95,12 @@ namespace WordxTex
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            compileInfo = __settingsBox.program_exec_params;
-            __settingsBox.GenerChange += delegate (Object prg_params, EventArgs Evr)
-            {
-                compileInfo = (string)prg_params;
-                check_programs();
-            };
-            texFontStyle = __settingsBox.fontFx;
-            __settingsBox.fontFxChange += delegate (Object texFontFx_param, EventArgs Evr)
-            {
-                texFontStyle = (string)texFontFx_param;
-            };
-            check_programs();
+            SettingsBox_Intl(false);
+            //settingsBox.generChangeEventHandler += delegate (Object prg_params, EventArgs Evr)
+            //{
+            //    check_programs();
+            //};
+
             Globals.ThisAddIn.Application.WindowSelectionChange += delegate (Selection Sel)
             {
                 if (programCheck == false)
@@ -123,15 +115,24 @@ namespace WordxTex
                 }
                 editContentCheck(Sel);
             };
-            btn_insMath.ShowLabel = __settingsBox.showLable;
-            btn_insChemReact.ShowLabel = __settingsBox.showLable;
-            btn_insChemStruct.ShowLabel = __settingsBox.showLable;
-            btn_ins_symbol.ShowLabel = __settingsBox.showLable;
-            btn_insplot.ShowLabel = __settingsBox.showLable;
-            btn_baselineU.ShowLabel = __settingsBox.showLable;
-            btn_baselineDn.ShowLabel = __settingsBox.showLable;
-            btn_baselineRt.ShowLabel = __settingsBox.showLable;
-            __settingsBox.showLableChange += delegate (Object checkStatus, EventArgs Evr)
+        }
+
+        private void SettingsBox_Intl(bool form_terminated)
+        {
+            //读取配置
+            if (form_terminated) settingsBox = new SettingsForm();
+            settingsBox.FormClosed += ((formObj, ea) => SettingsBox_Intl(true)); //防止设置窗口中止
+            settingsBox.generChangeEventHandler += ((prg_params, Evr) => check_programs()); //即TeX程序配置
+            //显示标签与否
+            btn_insMath.ShowLabel = settingsBox.showLabel;
+            btn_insChemReact.ShowLabel = settingsBox.showLabel;
+            btn_insChemStruct.ShowLabel = settingsBox.showLabel;
+            btn_ins_symbol.ShowLabel = settingsBox.showLabel;
+            btn_insplot.ShowLabel = settingsBox.showLabel;
+            btn_baselineU.ShowLabel = settingsBox.showLabel;
+            btn_baselineDn.ShowLabel = settingsBox.showLabel;
+            btn_baselineRt.ShowLabel = settingsBox.showLabel;
+            settingsBox.showLabelOptionChangeEventHandler += delegate (Object checkStatus, EventArgs Evr)
             {
                 btn_insMath.ShowLabel = (bool)checkStatus;
                 btn_insChemReact.ShowLabel = (bool)checkStatus;
@@ -142,27 +143,23 @@ namespace WordxTex
                 btn_baselineDn.ShowLabel = (bool)checkStatus;
                 btn_baselineRt.ShowLabel = (bool)checkStatus;
             };
+
+            check_programs();//检查Tex配置
         }
 
         private void editContentCheck(Selection Sel)
         {
-            string AlTex;
             try
             {
-                AlTex = Sel.InlineShapes[1].AlternativeText;
+                if (Sel.InlineShapes[1].AlternativeText.Contains("WordxTex_TexContent")) btn_edit.Enabled = true;
             }
             catch (System.Exception)
             {
                 btn_edit.Enabled = false;
                 return;
             }
-            if (AlTex.Contains("WordxTex_TexContent"))
-                btn_edit.Enabled = true;
         }
-        private void btn_settings_Click(object sender, RibbonControlEventArgs e)
-        {
-            __settingsBox.Show();
-        }
+        private void btn_settings_Click(object sender, RibbonControlEventArgs e) => settingsBox.Show();
 
         private void btn_insplot_Click(object sender, RibbonControlEventArgs e)
         {
@@ -174,15 +171,14 @@ namespace WordxTex
             CodeEditor.ShowDialog();
         }
 
-        private void btn_about_Click(object sender, RibbonControlEventArgs e)
-        {
-            AboutBox KA = new AboutBox();
-            KA.ShowDialog();
-        }
+        private void btn_about_Click(object sender, RibbonControlEventArgs e) => new AboutBox().ShowDialog();
 
         private void check_programs()
         {
-            if ((!ExistsOnPath(get_param_value(compileInfo, "complier") + ".exe")) || (!ExistsOnPath(get_param_value(compileInfo, "grapher") + ".exe")))
+            if (
+                (!ExistsOnPath(get_param_value(settingsBox.program_exec_params, "complier") + ".exe")) ||
+                (!ExistsOnPath(get_param_value(settingsBox.program_exec_params, "grapher") + ".exe"))
+                )
             {
                 lb_gen_tip.Label = "Fatal: Programs invalid!";
                 btn_insertTex.Enabled = false;
@@ -195,9 +191,9 @@ namespace WordxTex
                 btn_edit.Enabled = false;
                 return;
             }
-            if (get_param_value(compileInfo, "gaccept").Contains(get_param_value(compileInfo, "ctarget")))
+            if (get_param_value(settingsBox.program_exec_params, "gaccept").Contains(get_param_value(settingsBox.program_exec_params, "ctarget")))
             {
-                lb_gen_tip.Label = "Ready: " + get_param_value(compileInfo, "ctip") + get_param_value(compileInfo, "gtip");
+                lb_gen_tip.Label = "Ready: " + get_param_value(settingsBox.program_exec_params, "ctip") + get_param_value(settingsBox.program_exec_params, "gtip");
                 btn_insertTex.Enabled = true;
                 btn_insChemStruct.Enabled = true;
                 btn_insMath.Enabled = true;
@@ -219,10 +215,7 @@ namespace WordxTex
                 btn_edit.Enabled = false;
             }
         }
-        public static bool ExistsOnPath(string fileName)
-        {
-            return GetFullPath(fileName) != null;
-        }
+        public static bool ExistsOnPath(string fileName) => GetFullPath(fileName) != null;
 
         public static string GetFullPath(string fileName)
         {

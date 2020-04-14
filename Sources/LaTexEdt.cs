@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using WordxTex;
 using WordxTex.Properties;
 
 namespace WordxTex
@@ -55,15 +54,14 @@ namespace WordxTex
             logsbox.Clear(); //清空日志框，防溢出
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             string occupied_id = "param_" + Guid.NewGuid().ToString();
-            if (ThisDoc == null || ThisDoc.ReadOnly)
-                return;
+            if (ThisDoc == null || ThisDoc.ReadOnly) return;
             string workPath = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\.WordxTex";
             latex_style_gen(workPath);
             string TexFile = workPath + "\\" + occupied_id + ".tex";
             __texContent = texCodeBox.Text;
             System.Text.UTF8Encoding UTF8Enc = new System.Text.UTF8Encoding(false);
             File.WriteAllText(TexFile, texCodeBox.Text, UTF8Enc); //将tex文件写入到磁盘
-            latex_compile(Ribbon.compileInfo, occupied_id); //编译tex
+            latex_compile(Ribbon.settingsBox.program_exec_params, occupied_id); //编译tex
         }
         private void latex_compile(string cp_param, string OccupiedName)
         {
@@ -87,8 +85,8 @@ namespace WordxTex
             Grapher_Args = Grapher_Args.Replace("%%Equal", "=");
             Grapher_Args = Grapher_Args.Replace("\\", "/");
 
-            if (false == System.IO.Directory.Exists(workPath)) //检测工作目录是否需要创建
-                System.IO.Directory.CreateDirectory(workPath);
+            if (false == System.IO.Directory.Exists(workPath)) System.IO.Directory.CreateDirectory(workPath); //检测工作目录是否需要创建
+
             latex_style_gen(workPath); //生成自动模板
             //准备命令队列
             WordxTex.wTModule.ProgramQueue CpQueue = new WordxTex.wTModule.ProgramQueue(new string[] { Complier, Grapher }, new string[] { Complier_Args, Grapher_Args });
@@ -142,10 +140,10 @@ namespace WordxTex
                     shapePosition = ThisDoc.Application.Selection.Font.Position;
                     ThisDoc.Application.Selection.Delete(); //删除选中 的数据
                 }
-                if (Ribbon.get_param_value(Ribbon.compileInfo, "grapher") == (string)"dvipng")
+                if (Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "grapher") == (string)"dvipng")
                 {
-                    //dvipng 产出PNG分辨率为72dpi,将生成的png图片转换分辨率
-                    string pngvRes = Ribbon.get_param_value(WordxTex.Ribbon.compileInfo, "pngvRes");
+                    //dvipng 产出PNG为72dpi,将生成的png图片转换分辨率
+                    string pngvRes = Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "pngvRes");
                     int pngdpi = int.Parse(pngvRes);
                     Bitmap bMp = (Bitmap)Image.FromFile(__targetImgFile);
                     bMp.SetResolution(pngdpi, pngdpi);
@@ -156,8 +154,7 @@ namespace WordxTex
                 }
                 else
                 {
-                    //svg直接插入
-                    inDocPic = ThisDoc.InlineShapes.AddPicture(__targetImgFile);
+                    inDocPic = ThisDoc.InlineShapes.AddPicture(__targetImgFile);//svg直接插入
                 }
                 inDocPic.AlternativeText = __texContent; //写入Tex数据
                 inDocPic.Select(); //选择新插入的图片
@@ -241,7 +238,7 @@ namespace WordxTex
                 string fullStyle = Resources.tex_fontsize_style;
                 string texFontSize = ThisDoc.Application.Selection.Font.Size.ToString(); //当前应用设置的字体大小
                 fullStyle = fullStyle.Replace("%%WordxTex_Font_Symbol", texFontSize); //将模板内的通配符替换为字体大小
-                fullStyle = fullStyle.Replace("%%WordxTex_Equation_Font_Symbal", Ribbon.texFontStyle); //替换为所选字体样式
+                fullStyle = fullStyle.Replace("%%WordxTex_Equation_Font_Symbal", Ribbon.settingsBox.fontFx); //替换为所选字体样式
                 fullStyle = fullStyle.Replace("%%cMode", colorMode);
                 fullStyle = fullStyle.Replace("%%cParam", colorParam);
                 byte[] TexContent = System.Text.Encoding.Default.GetBytes(fullStyle);

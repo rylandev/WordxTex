@@ -213,7 +213,6 @@ namespace WordxTex.wTModule
             __exitCode = exitCode;
             __theLastProgram = theLastProgram;
             __programLeft = programLeft;
-
         }
         public string execName
         {
@@ -227,7 +226,6 @@ namespace WordxTex.wTModule
         {
             get { return __logs; }
             set { __logs = value; }
-
         }
         public int exitCode
         {
