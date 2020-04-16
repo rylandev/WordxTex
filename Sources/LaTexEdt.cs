@@ -51,6 +51,7 @@ namespace WordxTex
         private void btn_gen_Click(object sender, EventArgs e)
         {
             btn_gen.Enabled = false; //防止按多次
+            logsbox.ForeColor = System.Drawing.SystemColors.WindowText;
             logsbox.Clear(); //清空日志框，防溢出
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             string occupied_id = "param_" + Guid.NewGuid().ToString();
@@ -89,8 +90,11 @@ namespace WordxTex
 
             latex_style_gen(workPath); //生成自动模板
             //准备命令队列
-            WordxTex.wTModule.ProgramQueue CpQueue = new WordxTex.wTModule.ProgramQueue(new string[] { Complier, Grapher }, new string[] { Complier_Args, Grapher_Args });
-            CpQueue.RunAll = false; //阻止命令队列自动运行下一个
+            WordxTex.wTModule.ProgramQueue CpQueue = new WordxTex.wTModule.ProgramQueue(
+                new string[] { Complier, Grapher },
+                new string[] { Complier_Args, Grapher_Args },
+                Ribbon.settingsBox.maxRunTimePerProgram);
+            //Ribbon.settingsBox.maxRunTimePerProgramChangeEventHandler += ((maxTimeValue, tr) => CpQueue.maxRunTimePerProgram = (int)maxTimeValue);
             ThreadStart thrdstart = new ThreadStart(CpQueue.Run); //使用另一线程运行
             Thread thrd = new Thread(thrdstart);
             CpQueue.ProgramsRunLogStepRs += delegate (object logs, EventArgs evt)
@@ -99,8 +103,9 @@ namespace WordxTex
                 logsbox.Text += "\n" + (string)logs;
                 if (logsbox.Text.Length > 5)
                 {
-                    logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
-                    logsbox.ScrollToCaret();
+                    //logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
+                    logsbox.SelectionStart = logsbox.Text.Length;
+                    //logsbox.ScrollToCaret();
                 }
             };
             CpQueue.ProgramsRunResult += delegate (object reports, EventArgs ev) //接收运行结果
@@ -121,6 +126,8 @@ namespace WordxTex
                         //错误运行
                         logsbox.Select(logsBoxCount, programExecParam.Length);
                         logsbox.SelectionColor = Color.Red; //标红
+                        logsbox.SelectionStart = logsBoxCount;
+                        logsbox.ScrollToCaret(); //移动光标到错误位置
                         btn_gen.Enabled = true;//恢复按钮
                         return; //停止运行
                     }
@@ -139,6 +146,13 @@ namespace WordxTex
                 {
                     shapePosition = ThisDoc.Application.Selection.Font.Position;
                     ThisDoc.Application.Selection.Delete(); //删除选中 的数据
+                }
+                if (!File.Exists(__targetImgFile))
+                {
+                    logsbox.Select(0, logsbox.Text.Length - 1);
+                    logsbox.ForeColor = Color.Red; //标红
+                    btn_gen.Enabled = true;//恢复按钮
+                    return; //停止运行
                 }
                 if (Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "grapher") == (string)"dvipng")
                 {
@@ -172,8 +186,15 @@ namespace WordxTex
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             if (false == System.IO.Directory.Exists(workPath))
                 System.IO.Directory.CreateDirectory(workPath);
-            for (int i = 0; i < Directory.GetFiles(workPath).ToList().Count; i++)
-                File.Delete(Directory.GetFiles(workPath)[i]); //清空临时目录
+            try
+            {
+                for (int i = 0; i < Directory.GetFiles(workPath).ToList().Count; i++)
+                    File.Delete(Directory.GetFiles(workPath)[i]); //清空临时目录
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Some files in " + workPath + " were ocuupied, result may unsatisfy.", "Warning!!");
+            };
             latex_style_gen(workPath); //生成自动模板
             this.FormClosing += LaTexEdt_FormClosing;
             this.Deactivate += LaTexEdt_Deactivate;

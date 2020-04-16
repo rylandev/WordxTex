@@ -168,7 +168,7 @@ namespace WordxTex
                 return;
             LaTexEdt CodeEditor = new LaTexEdt(false, Resources.tex_sample_plot, 0, 0);
             //CodeEditor.updateSRC(Resources.tex_sample_plot);
-            CodeEditor.ShowDialog();
+            CodeEditor.Show();
         }
 
         private void btn_about_Click(object sender, RibbonControlEventArgs e) => new AboutBox().ShowDialog();
@@ -299,5 +299,6 @@ namespace WordxTex
             //CodeEditor.updateSRC(Resources.tex_sample_matheq);
             CodeEditor.Show();
         }
+
     }
 }

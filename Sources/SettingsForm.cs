@@ -18,6 +18,7 @@ namespace WordxTex
         string iniFile = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\.WordxTex.ini";
 
         public event EventHandler generChangeEventHandler;
+        public event EventHandler maxRunTimePerProgramChangeEventHandler;
         public event EventHandler showLabelOptionChangeEventHandler;
 
         public SettingsForm()
@@ -31,6 +32,7 @@ namespace WordxTex
             };
             //防止EventHandle返回null
             generChangeEventHandler += delegate (object tmpo, EventArgs tmpe) { };
+            maxRunTimePerProgramChangeEventHandler += delegate (object tmpo, EventArgs tmpe) { };
             showLabelOptionChangeEventHandler += delegate (object tmpo, EventArgs tmpe) { };
             //读出配置文件
             try
@@ -47,6 +49,9 @@ namespace WordxTex
                 GetPrivateProfileString("Option", "showLabel", "", tempIniValue, 255, iniFile);
                 if (tempIniValue.ToString().Length > 1)
                     chb_show_fl.Checked = bool.Parse(tempIniValue.ToString());
+                GetPrivateProfileString("Gener", "Time", "", tempIniValue, 255, iniFile);
+                if (tempIniValue.ToString().Length > 1)
+                    sb_execPerPrgTime.Value = int.Parse(tempIniValue.ToString());
             }
             catch (ArgumentException)
             {
@@ -56,10 +61,44 @@ namespace WordxTex
             }
         }
         public bool showLabel => chb_show_fl.Checked;
+        public int maxRunTimePerProgram => Convert.ToInt32(sb_execPerPrgTime.Value);
         public string fontFx => (string)cb_fonts.SelectedNode.Tag;
         public string program_exec_params => (string)ctb_compiler.SelectedNode.Tag + ";" + (string)ctb_graphbox.SelectedNode.Tag;
         private void SettingsBox_Load(object sender, EventArgs e)
         {
+            try
+            {
+                GetPrivateProfileString("Debugging", "DebugMode", "", tempIniValue, 255, iniFile);
+                if (bool.Parse(tempIniValue.ToString()) == true)
+                {
+                    ComboTreeNode comboTreeNode25 = new ComboTreeNode();
+                    comboTreeNode25.Expanded = false;
+                    comboTreeNode25.ForeColor = System.Drawing.Color.Empty;
+                    comboTreeNode25.Name = "winver_test";
+                    comboTreeNode25.Text = "winver_test";
+                    comboTreeNode25.Tag = "complier=winver;cp_arg=;ctarget=.xdv;ctip=.tex->.xdv";
+                    comboTreeNode25.ToolTip = null;
+                    ComboTreeNode comboTreeNode31 = new ComboTreeNode();
+                    comboTreeNode31.Expanded = false;
+                    comboTreeNode31.ForeColor = System.Drawing.Color.Empty;
+                    comboTreeNode31.Name = "grapher_tmpe";
+                    comboTreeNode31.Text = "grapher_tmpe";
+                    comboTreeNode31.Tag = "grapher=winver;gr_arg=;gtarget=.svg;gaccept=.dvi,.xdv;gtip=->.svg";
+                    comboTreeNode31.ToolTip = null;
+                    ctb_compiler.Nodes.Add(comboTreeNode25);
+                    ctb_graphbox.Nodes.Add(comboTreeNode31);
+                }
+                else
+                {
+                    WritePrivateProfileString("Debugging", "DebugMode", "False", iniFile);
+                }
+            }
+            catch (ArgumentException)
+            {
+                //配置文件出错则删除配置文件
+                if (File.Exists(iniFile))
+                    File.Delete(iniFile);
+            }
             ctb_compiler.SelectedNodeChanged += ctb_gener_SelectedNodeChanged;
             ctb_graphbox.SelectedNodeChanged += ctb_gener_SelectedNodeChanged;
             generChangeEventHandler((string)ctb_compiler.SelectedNode.Tag + ";" + (string)ctb_graphbox.SelectedNode.Tag, new EventArgs());
@@ -81,5 +120,10 @@ namespace WordxTex
 
         private void cb_fonts_Change(object sender, EventArgs e) => WritePrivateProfileString("Style", "Font", cb_fonts.Path, iniFile);
 
+        private void sb_execPerPrgTime_ValueChanged(object sender, EventArgs e)
+        {
+            maxRunTimePerProgramChangeEventHandler(sb_execPerPrgTime.Value, new EventArgs());
+            WritePrivateProfileString("Gener", "Time", sb_execPerPrgTime.Value.ToString(), iniFile);
+        }
     }
 }

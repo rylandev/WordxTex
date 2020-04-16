@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Timers;
 
 namespace WordxTex.wTModule
 {
@@ -12,9 +13,11 @@ namespace WordxTex.wTModule
         int MaxProgramNum = 0;
         string[] uePrograms = new string[] { };
         string[] ueProgramsArgs = new string[] { };
+        int __maxRunTime = 30;
         bool __runAll = true;
-        public ProgramQueue(string[] Programs, string[] ProgramArgs)
+        public ProgramQueue(string[] Programs, string[] ProgramArgs, int maxPerProgramRunTime)
         {
+            __maxRunTime = maxPerProgramRunTime;
             if (Programs.Length == ProgramArgs.Length)
             {
                 uePrograms = Programs;
@@ -22,6 +25,11 @@ namespace WordxTex.wTModule
                 CurProgramNum = 0;
                 MaxProgramNum = Programs.Length - 1;
             }
+        }
+        public int maxRunTimePerProgram
+        {
+            get { return __maxRunTime; }
+            set { __maxRunTime = value; }
         }
         public int MaxProgramsCount()
         {
@@ -54,7 +62,9 @@ namespace WordxTex.wTModule
             object[] prResult = new object[uePrograms.Length];
             for (int i = 0; i < uePrograms.Length; i++)
             {
-                prResult[i] = exeProcessWithRslt();
+                ProgramResult prgResult = exeProcessWithRslt();
+                prResult[i] = prgResult;
+                if (prgResult.exitCode != 0) break; //错误就停止
                 ExecProgramIteration();
             }
             ProgramsRunResult(prResult, new EventArgs());
@@ -85,6 +95,22 @@ namespace WordxTex.wTModule
             string args = ueProgramsArgs[CurProgramNum];
             using (Process Rprocess = new Process())
             {
+                System.Timers.Timer execTimer = new System.Timers.Timer();
+                execTimer.Interval = __maxRunTime * 1000;
+                execTimer.Elapsed += delegate (object ta, ElapsedEventArgs te)
+                {
+                    execTimer.Stop();
+                    try
+                    {
+                        if (!Rprocess.HasExited)
+                            Rprocess.Kill();
+                    }
+                    catch (System.Exception) { };
+                };
+                //System.Windows.Forms.Timer execTimer = new System.Windows.Forms.Timer();
+                //execTimer.Elapsed += ((timer_tick, te) => MessageBox.Show("TT"));
+                //execTimer.Tick += ((timer_tick, te) => Rprocess.Kill());
+                //execTimer.Tick += ExecTimer_Tick;
                 Rprocess.StartInfo.UseShellExecute = false; //不使用CMD
                 Rprocess.StartInfo.CreateNoWindow = true; //不显示黑色窗口
                 Rprocess.OutputDataReceived += delegate (object sender, DataReceivedEventArgs e)
@@ -118,6 +144,8 @@ namespace WordxTex.wTModule
                 Rprocess.StartInfo.FileName = execPath;
                 Rprocess.StartInfo.Arguments = args;
                 Rprocess.EnableRaisingEvents = true;
+                execTimer.Enabled = true;
+                execTimer.Start();
                 if (!Rprocess.Start())
                 {
                     return new ProgramResult(execPath, args, -1, Terminated(), MaxProgramNum - CurProgramNum);
@@ -130,6 +158,12 @@ namespace WordxTex.wTModule
                 return pResult;
             }
         }
+
+        private void ExecTimer_Tick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         public void execProcess()
         {
             string uelogs = "";

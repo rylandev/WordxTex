@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ComboTreeNode comboTreeNode1 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode2 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode3 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode4 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode5 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode6 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode7 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode8 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode9 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode10 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode22 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode23 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode24 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode26 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode27 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode28 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode29 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode30 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode32 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode33 = new ComboTreeNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
-            ComboTreeNode comboTreeNode11 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode12 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode13 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode14 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode15 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode16 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode17 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode18 = new ComboTreeNode();
-            ComboTreeNode comboTreeNode19 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode34 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode35 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode36 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode37 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode38 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode39 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode40 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode41 = new ComboTreeNode();
+            ComboTreeNode comboTreeNode42 = new ComboTreeNode();
             this.ctb_compiler = new ComboTreeBox();
             this.ctb_graphbox = new ComboTreeBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,6 +56,9 @@
             this.chb_show_fl = new System.Windows.Forms.CheckBox();
             this.cb_fonts = new ComboTreeBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.sb_execPerPrgTime = new System.Windows.Forms.NumericUpDown();
+            this.execTime = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.sb_execPerPrgTime)).BeginInit();
             this.SuspendLayout();
             // 
             // ctb_compiler
@@ -63,50 +66,51 @@
             this.ctb_compiler.DroppedDown = false;
             this.ctb_compiler.Location = new System.Drawing.Point(63, 12);
             this.ctb_compiler.Name = "ctb_compiler";
-            comboTreeNode1.Expanded = true;
-            comboTreeNode1.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode1.Name = "xeLaTeX";
-            comboTreeNode2.Expanded = false;
-            comboTreeNode2.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode2.Name = "->.xdv";
-            comboTreeNode2.Tag = "complier=xelatex;cp_arg=-interaction%%Equalnonstopmode%%BlankSpace-no-pdf%%BlankS" +
+            comboTreeNode22.Expanded = true;
+            comboTreeNode22.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode22.Name = "xeLaTeX";
+            comboTreeNode23.Expanded = false;
+            comboTreeNode23.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode23.Name = "->.xdv";
+            comboTreeNode23.Tag = "complier=xelatex;cp_arg=-interaction%%Equalnonstopmode%%BlankSpace-no-pdf%%BlankS" +
     "pace-output-directory%%Equal%%OutDir%%BlankSpace%%InTexFile;ctarget=.xdv;ctip=.t" +
     "ex->.xdv";
-            comboTreeNode2.Text = ".tex-xeLaTeX->.xdv";
-            comboTreeNode2.ToolTip = null;
-            comboTreeNode3.Expanded = false;
-            comboTreeNode3.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode3.Name = "->.pdf";
-            comboTreeNode3.Tag = "complier=xelatex;cp_arg=-interaction%%Equalnonstopmode%%BlankSpace%%BlankSpace-ou" +
+            comboTreeNode23.Text = ".tex-xeLaTeX->.xdv";
+            comboTreeNode23.ToolTip = null;
+            comboTreeNode24.Expanded = false;
+            comboTreeNode24.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode24.Name = "->.pdf";
+            comboTreeNode24.Tag = "complier=xelatex;cp_arg=-interaction%%Equalnonstopmode%%BlankSpace%%BlankSpace-ou" +
     "tput-directory%%Equal%%OutDir%%BlankSpace%%InTexFile;ctarget=.pdf;ctip=.tex->.pd" +
     "f";
-            comboTreeNode3.Text = ".tex-xeLaTeX->.pdf";
-            comboTreeNode3.ToolTip = null;
-            comboTreeNode1.Nodes.Add(comboTreeNode2);
-            comboTreeNode1.Nodes.Add(comboTreeNode3);
-            comboTreeNode1.Selectable = false;
-            comboTreeNode1.Tag = null;
-            comboTreeNode1.Text = "xeLaTeX";
-            comboTreeNode1.ToolTip = null;
-            comboTreeNode4.Expanded = true;
-            comboTreeNode4.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode4.Name = "LaTeX";
-            comboTreeNode5.Expanded = false;
-            comboTreeNode5.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode5.Name = "->.dvi";
-            comboTreeNode5.Tag = "complier=latex;cp_arg=-output-format%%Equaldvi%%BlankSpace-output-directory%%Equa" +
-    "l%%OutDir%%BlankSpace%%InTexFile;ctarget=.dvi;ctip=.tex->.dvi";
-            comboTreeNode5.Text = ".tex-LaTeX->.dvi";
-            comboTreeNode5.ToolTip = null;
-            comboTreeNode4.Nodes.Add(comboTreeNode5);
-            comboTreeNode4.Selectable = false;
-            comboTreeNode4.Tag = null;
-            comboTreeNode4.Text = "LaTeX";
-            comboTreeNode4.ToolTip = null;
-            this.ctb_compiler.Nodes.Add(comboTreeNode1);
-            this.ctb_compiler.Nodes.Add(comboTreeNode4);
+            comboTreeNode24.Text = ".tex-xeLaTeX->.pdf";
+            comboTreeNode24.ToolTip = null;
+            comboTreeNode22.Nodes.Add(comboTreeNode23);
+            comboTreeNode22.Nodes.Add(comboTreeNode24);
+            comboTreeNode22.Selectable = false;
+            comboTreeNode22.Tag = null;
+            comboTreeNode22.Text = "xeLaTeX";
+            comboTreeNode22.ToolTip = null;
+            comboTreeNode26.Expanded = true;
+            comboTreeNode26.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode26.Name = "LaTeX";
+            comboTreeNode27.Expanded = false;
+            comboTreeNode27.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode27.Name = "->.dvi";
+            comboTreeNode27.Tag = "complier=latex;cp_arg=-interaction%%Equalnonstopmode%%BlankSpace-output-format%%E" +
+    "qualdvi%%BlankSpace-output-directory%%Equal%%OutDir%%BlankSpace%%InTexFile;ctarg" +
+    "et=.dvi;ctip=.tex->.dvi";
+            comboTreeNode27.Text = ".tex-LaTeX->.dvi";
+            comboTreeNode27.ToolTip = null;
+            comboTreeNode26.Nodes.Add(comboTreeNode27);
+            comboTreeNode26.Selectable = false;
+            comboTreeNode26.Tag = null;
+            comboTreeNode26.Text = "LaTeX";
+            comboTreeNode26.ToolTip = null;
+            this.ctb_compiler.Nodes.Add(comboTreeNode22);
+            this.ctb_compiler.Nodes.Add(comboTreeNode26);
             this.ctb_compiler.Path = "xeLaTeX\\.tex-xeLaTeX->.xdv";
-            this.ctb_compiler.SelectedNode = comboTreeNode2;
+            this.ctb_compiler.SelectedNode = comboTreeNode23;
             this.ctb_compiler.Size = new System.Drawing.Size(209, 23);
             this.ctb_compiler.TabIndex = 0;
             // 
@@ -115,75 +119,75 @@
             this.ctb_graphbox.DroppedDown = false;
             this.ctb_graphbox.Location = new System.Drawing.Point(63, 41);
             this.ctb_graphbox.Name = "ctb_graphbox";
-            comboTreeNode6.Expanded = true;
-            comboTreeNode6.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode6.Name = "dvisvgm";
-            comboTreeNode7.Expanded = false;
-            comboTreeNode7.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode7.Name = "[.dvi,.xdv]->.svg";
-            comboTreeNode7.Tag = "grapher=dvisvgm;gr_arg=--output%%Equal%%OutImgFile%%BlankSpace-n%%BlankSpace%%InD" +
+            comboTreeNode28.Expanded = true;
+            comboTreeNode28.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode28.Name = "dvisvgm";
+            comboTreeNode29.Expanded = false;
+            comboTreeNode29.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode29.Name = "[.dvi,.xdv]->.svg";
+            comboTreeNode29.Tag = "grapher=dvisvgm;gr_arg=--output%%Equal%%OutImgFile%%BlankSpace-n%%BlankSpace%%InD" +
     "viFile;gtarget=.svg;gaccept=.dvi,.xdv;gtip=->.svg";
-            comboTreeNode7.Text = "[.dvi,.xdv]-dvisvgm->.svg";
-            comboTreeNode7.ToolTip = null;
-            comboTreeNode8.Expanded = false;
-            comboTreeNode8.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode8.Name = ".pdf->.svg";
-            comboTreeNode8.Tag = "grapher=dvisvgm;gr_arg=--pdf%%BlankSpace--output%%Equal%%OutImgFile%%BlankSpace-n" +
+            comboTreeNode29.Text = "[.dvi,.xdv]-dvisvgm->.svg";
+            comboTreeNode29.ToolTip = null;
+            comboTreeNode30.Expanded = false;
+            comboTreeNode30.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode30.Name = ".pdf->.svg";
+            comboTreeNode30.Tag = "grapher=dvisvgm;gr_arg=--pdf%%BlankSpace--output%%Equal%%OutImgFile%%BlankSpace-n" +
     "%%BlankSpace%%InDviFile;gtarget=.svg;gaccept=.pdf;gtip=->.svg";
-            comboTreeNode8.Text = ".pdf-dvisvgm->.svg";
-            comboTreeNode8.ToolTip = null;
-            comboTreeNode6.Nodes.Add(comboTreeNode7);
-            comboTreeNode6.Nodes.Add(comboTreeNode8);
-            comboTreeNode6.Selectable = false;
-            comboTreeNode6.Tag = null;
-            comboTreeNode6.Text = "dvisvgm";
-            comboTreeNode6.ToolTip = null;
-            comboTreeNode9.Expanded = true;
-            comboTreeNode9.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode9.Name = "dvipng";
-            comboTreeNode10.Expanded = false;
-            comboTreeNode10.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode10.Name = ".dvi-dvipng->(300dpi).png";
-            comboTreeNode10.Tag = resources.GetString("comboTreeNode10.Tag");
-            comboTreeNode10.Text = ".dvi-dvipng->(300dpi).png";
-            comboTreeNode10.ToolTip = null;
-            comboTreeNode11.Expanded = false;
-            comboTreeNode11.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode11.Name = ".dvi-dvipng->(600dpi).png";
-            comboTreeNode11.Tag = resources.GetString("comboTreeNode11.Tag");
-            comboTreeNode11.Text = ".dvi-dvipng->(600dpi).png";
-            comboTreeNode11.ToolTip = null;
-            comboTreeNode12.Expanded = false;
-            comboTreeNode12.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode12.Name = ".dvi-dvipng->(900dpi).png";
-            comboTreeNode12.Tag = resources.GetString("comboTreeNode12.Tag");
-            comboTreeNode12.Text = ".dvi-dvipng->(900dpi).png";
-            comboTreeNode12.ToolTip = null;
-            comboTreeNode13.Expanded = false;
-            comboTreeNode13.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode13.Name = ".dvi-dvipng->(1200dpi).png";
-            comboTreeNode13.Tag = resources.GetString("comboTreeNode13.Tag");
-            comboTreeNode13.Text = ".dvi-dvipng->(1200dpi).png";
-            comboTreeNode13.ToolTip = null;
-            comboTreeNode14.Expanded = false;
-            comboTreeNode14.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode14.Name = ".dvi-dvipng->(2400dpi).png";
-            comboTreeNode14.Tag = resources.GetString("comboTreeNode14.Tag");
-            comboTreeNode14.Text = ".dvi-dvipng->(2400dpi).png";
-            comboTreeNode14.ToolTip = null;
-            comboTreeNode9.Nodes.Add(comboTreeNode10);
-            comboTreeNode9.Nodes.Add(comboTreeNode11);
-            comboTreeNode9.Nodes.Add(comboTreeNode12);
-            comboTreeNode9.Nodes.Add(comboTreeNode13);
-            comboTreeNode9.Nodes.Add(comboTreeNode14);
-            comboTreeNode9.Selectable = false;
-            comboTreeNode9.Tag = null;
-            comboTreeNode9.Text = "dvipng";
-            comboTreeNode9.ToolTip = null;
-            this.ctb_graphbox.Nodes.Add(comboTreeNode6);
-            this.ctb_graphbox.Nodes.Add(comboTreeNode9);
+            comboTreeNode30.Text = ".pdf-dvisvgm->.svg";
+            comboTreeNode30.ToolTip = null;
+            comboTreeNode28.Nodes.Add(comboTreeNode29);
+            comboTreeNode28.Nodes.Add(comboTreeNode30);
+            comboTreeNode28.Selectable = false;
+            comboTreeNode28.Tag = null;
+            comboTreeNode28.Text = "dvisvgm";
+            comboTreeNode28.ToolTip = null;
+            comboTreeNode32.Expanded = true;
+            comboTreeNode32.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode32.Name = "dvipng";
+            comboTreeNode33.Expanded = false;
+            comboTreeNode33.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode33.Name = ".dvi-dvipng->(300dpi).png";
+            comboTreeNode33.Tag = resources.GetString("comboTreeNode33.Tag");
+            comboTreeNode33.Text = ".dvi-dvipng->(300dpi).png";
+            comboTreeNode33.ToolTip = null;
+            comboTreeNode34.Expanded = false;
+            comboTreeNode34.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode34.Name = ".dvi-dvipng->(600dpi).png";
+            comboTreeNode34.Tag = resources.GetString("comboTreeNode34.Tag");
+            comboTreeNode34.Text = ".dvi-dvipng->(600dpi).png";
+            comboTreeNode34.ToolTip = null;
+            comboTreeNode35.Expanded = false;
+            comboTreeNode35.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode35.Name = ".dvi-dvipng->(900dpi).png";
+            comboTreeNode35.Tag = resources.GetString("comboTreeNode35.Tag");
+            comboTreeNode35.Text = ".dvi-dvipng->(900dpi).png";
+            comboTreeNode35.ToolTip = null;
+            comboTreeNode36.Expanded = false;
+            comboTreeNode36.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode36.Name = ".dvi-dvipng->(1200dpi).png";
+            comboTreeNode36.Tag = resources.GetString("comboTreeNode36.Tag");
+            comboTreeNode36.Text = ".dvi-dvipng->(1200dpi).png";
+            comboTreeNode36.ToolTip = null;
+            comboTreeNode37.Expanded = false;
+            comboTreeNode37.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode37.Name = ".dvi-dvipng->(2400dpi).png";
+            comboTreeNode37.Tag = resources.GetString("comboTreeNode37.Tag");
+            comboTreeNode37.Text = ".dvi-dvipng->(2400dpi).png";
+            comboTreeNode37.ToolTip = null;
+            comboTreeNode32.Nodes.Add(comboTreeNode33);
+            comboTreeNode32.Nodes.Add(comboTreeNode34);
+            comboTreeNode32.Nodes.Add(comboTreeNode35);
+            comboTreeNode32.Nodes.Add(comboTreeNode36);
+            comboTreeNode32.Nodes.Add(comboTreeNode37);
+            comboTreeNode32.Selectable = false;
+            comboTreeNode32.Tag = null;
+            comboTreeNode32.Text = "dvipng";
+            comboTreeNode32.ToolTip = null;
+            this.ctb_graphbox.Nodes.Add(comboTreeNode28);
+            this.ctb_graphbox.Nodes.Add(comboTreeNode32);
             this.ctb_graphbox.Path = "dvisvgm\\[.dvi,.xdv]-dvisvgm->.svg";
-            this.ctb_graphbox.SelectedNode = comboTreeNode7;
+            this.ctb_graphbox.SelectedNode = comboTreeNode29;
             this.ctb_graphbox.Size = new System.Drawing.Size(209, 23);
             this.ctb_graphbox.TabIndex = 1;
             // 
@@ -207,7 +211,7 @@
             // 
             // btn_hide
             // 
-            this.btn_hide.Location = new System.Drawing.Point(197, 126);
+            this.btn_hide.Location = new System.Drawing.Point(197, 151);
             this.btn_hide.Name = "btn_hide";
             this.btn_hide.Size = new System.Drawing.Size(75, 23);
             this.btn_hide.TabIndex = 4;
@@ -218,7 +222,7 @@
             // chb_show_fl
             // 
             this.chb_show_fl.AutoSize = true;
-            this.chb_show_fl.Location = new System.Drawing.Point(9, 106);
+            this.chb_show_fl.Location = new System.Drawing.Point(9, 146);
             this.chb_show_fl.Name = "chb_show_fl";
             this.chb_show_fl.Size = new System.Drawing.Size(138, 16);
             this.chb_show_fl.TabIndex = 5;
@@ -231,43 +235,43 @@
             this.cb_fonts.DroppedDown = false;
             this.cb_fonts.Location = new System.Drawing.Point(63, 77);
             this.cb_fonts.Name = "cb_fonts";
-            comboTreeNode15.Expanded = false;
-            comboTreeNode15.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode15.Name = "default";
-            comboTreeNode15.Tag = "%%default";
-            comboTreeNode15.Text = "default";
-            comboTreeNode15.ToolTip = null;
-            comboTreeNode16.Expanded = false;
-            comboTreeNode16.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode16.Name = "txfonts";
-            comboTreeNode16.Tag = "\\usepackage{txfonts}";
-            comboTreeNode16.Text = "txfonts";
-            comboTreeNode16.ToolTip = "\\usepackage{txfonts}";
-            comboTreeNode17.Expanded = false;
-            comboTreeNode17.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode17.Name = "fourier";
-            comboTreeNode17.Tag = "\\usepackage{fourier}";
-            comboTreeNode17.Text = "fourier";
-            comboTreeNode17.ToolTip = "\\usepackage{fourier}";
-            comboTreeNode18.Expanded = false;
-            comboTreeNode18.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode18.Name = "mathptmx";
-            comboTreeNode18.Tag = "\\usepackage{mathptmx,tgtermes}";
-            comboTreeNode18.Text = "mathptmx";
-            comboTreeNode18.ToolTip = "\\usepackage{mathptmx,tgtermes}";
-            comboTreeNode19.Expanded = false;
-            comboTreeNode19.ForeColor = System.Drawing.Color.Empty;
-            comboTreeNode19.Name = "charter";
-            comboTreeNode19.Tag = "\\usepackage[charter]{mathdesign}";
-            comboTreeNode19.Text = "charter";
-            comboTreeNode19.ToolTip = "\\usepackage[charter]{mathdesign}";
-            this.cb_fonts.Nodes.Add(comboTreeNode15);
-            this.cb_fonts.Nodes.Add(comboTreeNode16);
-            this.cb_fonts.Nodes.Add(comboTreeNode17);
-            this.cb_fonts.Nodes.Add(comboTreeNode18);
-            this.cb_fonts.Nodes.Add(comboTreeNode19);
+            comboTreeNode38.Expanded = false;
+            comboTreeNode38.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode38.Name = "default";
+            comboTreeNode38.Tag = "%%default";
+            comboTreeNode38.Text = "default";
+            comboTreeNode38.ToolTip = null;
+            comboTreeNode39.Expanded = false;
+            comboTreeNode39.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode39.Name = "txfonts";
+            comboTreeNode39.Tag = "\\usepackage{txfonts}";
+            comboTreeNode39.Text = "txfonts";
+            comboTreeNode39.ToolTip = "\\usepackage{txfonts}";
+            comboTreeNode40.Expanded = false;
+            comboTreeNode40.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode40.Name = "fourier";
+            comboTreeNode40.Tag = "\\usepackage{fourier}";
+            comboTreeNode40.Text = "fourier";
+            comboTreeNode40.ToolTip = "\\usepackage{fourier}";
+            comboTreeNode41.Expanded = false;
+            comboTreeNode41.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode41.Name = "mathptmx";
+            comboTreeNode41.Tag = "\\usepackage{mathptmx,tgtermes}";
+            comboTreeNode41.Text = "mathptmx";
+            comboTreeNode41.ToolTip = "\\usepackage{mathptmx,tgtermes}";
+            comboTreeNode42.Expanded = false;
+            comboTreeNode42.ForeColor = System.Drawing.Color.Empty;
+            comboTreeNode42.Name = "charter";
+            comboTreeNode42.Tag = "\\usepackage[charter]{mathdesign}";
+            comboTreeNode42.Text = "charter";
+            comboTreeNode42.ToolTip = "\\usepackage[charter]{mathdesign}";
+            this.cb_fonts.Nodes.Add(comboTreeNode38);
+            this.cb_fonts.Nodes.Add(comboTreeNode39);
+            this.cb_fonts.Nodes.Add(comboTreeNode40);
+            this.cb_fonts.Nodes.Add(comboTreeNode41);
+            this.cb_fonts.Nodes.Add(comboTreeNode42);
             this.cb_fonts.Path = "default";
-            this.cb_fonts.SelectedNode = comboTreeNode15;
+            this.cb_fonts.SelectedNode = comboTreeNode38;
             this.cb_fonts.Size = new System.Drawing.Size(209, 23);
             this.cb_fonts.TabIndex = 6;
             this.cb_fonts.SelectedNodeChanged += new System.EventHandler(this.cb_fonts_Change);
@@ -281,11 +285,45 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Fonts:";
             // 
+            // sb_execPerPrgTime
+            // 
+            this.sb_execPerPrgTime.Location = new System.Drawing.Point(210, 113);
+            this.sb_execPerPrgTime.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.sb_execPerPrgTime.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.sb_execPerPrgTime.Name = "sb_execPerPrgTime";
+            this.sb_execPerPrgTime.Size = new System.Drawing.Size(62, 21);
+            this.sb_execPerPrgTime.TabIndex = 8;
+            this.sb_execPerPrgTime.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.sb_execPerPrgTime.ValueChanged += new System.EventHandler(this.sb_execPerPrgTime_ValueChanged);
+            // 
+            // execTime
+            // 
+            this.execTime.AutoSize = true;
+            this.execTime.Location = new System.Drawing.Point(7, 118);
+            this.execTime.Name = "execTime";
+            this.execTime.Size = new System.Drawing.Size(197, 12);
+            this.execTime.TabIndex = 7;
+            this.execTime.Text = "Max wait time(per program, sec):";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 161);
+            this.ClientSize = new System.Drawing.Size(284, 186);
+            this.Controls.Add(this.sb_execPerPrgTime);
+            this.Controls.Add(this.execTime);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cb_fonts);
             this.Controls.Add(this.chb_show_fl);
@@ -303,6 +341,7 @@
             this.Text = "WordxTex - Settings";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SettingsBox_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.sb_execPerPrgTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,5 +356,7 @@
         private System.Windows.Forms.CheckBox chb_show_fl;
         private ComboTreeBox cb_fonts;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown sb_execPerPrgTime;
+        private System.Windows.Forms.Label execTime;
     }
 }

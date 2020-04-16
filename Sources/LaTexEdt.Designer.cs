@@ -56,6 +56,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logsbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.logsbox.DetectUrls = false;
+            this.logsbox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.logsbox.Location = new System.Drawing.Point(47, 157);
             this.logsbox.Name = "logsbox";
             this.logsbox.ReadOnly = true;
