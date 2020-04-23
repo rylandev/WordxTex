@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.btn_gen = new System.Windows.Forms.Button();
-            this.logsbox = new System.Windows.Forms.RichTextBox();
+            this.logsBox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cb_AutoClose = new System.Windows.Forms.CheckBox();
             this.texCodeBox = new ICSharpCode.TextEditor.TextEditorControl();
@@ -50,22 +50,21 @@
             this.btn_gen.UseVisualStyleBackColor = true;
             this.btn_gen.Click += new System.EventHandler(this.btn_gen_Click);
             // 
-            // logsbox
+            // logsBox
             // 
-            this.logsbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.logsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logsbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.logsbox.DetectUrls = false;
-            this.logsbox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.logsbox.Location = new System.Drawing.Point(47, 157);
-            this.logsbox.Name = "logsbox";
-            this.logsbox.ReadOnly = true;
-            this.logsbox.Size = new System.Drawing.Size(381, 104);
-            this.logsbox.TabIndex = 2;
-            this.logsbox.TabStop = false;
-            this.logsbox.Text = "";
-            this.logsbox.WordWrap = false;
-            this.logsbox.TextChanged += new System.EventHandler(this.logsbox_TextChanged);
+            this.logsBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.logsBox.DetectUrls = false;
+            this.logsBox.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.logsBox.Location = new System.Drawing.Point(47, 157);
+            this.logsBox.Name = "logsBox";
+            this.logsBox.ReadOnly = true;
+            this.logsBox.Size = new System.Drawing.Size(381, 104);
+            this.logsBox.TabIndex = 2;
+            this.logsBox.TabStop = false;
+            this.logsBox.Text = "";
+            this.logsBox.WordWrap = false;
             // 
             // label2
             // 
@@ -140,7 +139,7 @@
             this.Controls.Add(this.btn_prvTex);
             this.Controls.Add(this.cb_AutoClose);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.logsbox);
+            this.Controls.Add(this.logsBox);
             this.Controls.Add(this.texCodeBox);
             this.Controls.Add(this.btn_gen);
             this.MaximizeBox = false;
@@ -161,7 +160,7 @@
 
         private System.Windows.Forms.Button btn_gen;
         private ICSharpCode.TextEditor.TextEditorControl texCodeBox;
-        private System.Windows.Forms.RichTextBox logsbox;
+        private System.Windows.Forms.RichTextBox logsBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cb_AutoClose;
         private System.Windows.Forms.Button btn_prvTex;

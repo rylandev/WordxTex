@@ -14,11 +14,10 @@ namespace WordxTex
 {
     public partial class LaTexEdt : Form
     {
-        public string workPath = System.Environment.GetEnvironmentVariable("TEMP") + "\\WordxTex";
+        public string workPath = Ribbon.settingsBox.workPath + "\\WordxTex";
         public LaTexEdt(bool BatchMode, string Code, int caretStart, int caretEnd)
         {
             InitializeComponent();
-            workPath = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\.WordxTex";
             if (BatchMode) //批量模式（测试中）
             {
                 btn_prvTex.Enabled = true;
@@ -51,12 +50,14 @@ namespace WordxTex
         private void btn_gen_Click(object sender, EventArgs e)
         {
             btn_gen.Enabled = false; //防止按多次
-            logsbox.ForeColor = System.Drawing.SystemColors.WindowText;
-            logsbox.Clear(); //清空日志框，防溢出
+            Cursor = Cursors.AppStarting;
+            logsBox.ForeColor = System.Drawing.SystemColors.WindowText;
+            logsBox.Clear(); //清空日志框，防溢出
+            logsBox.ClearUndo();
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
             string occupied_id = "param_" + Guid.NewGuid().ToString();
             if (ThisDoc == null || ThisDoc.ReadOnly) return;
-            string workPath = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\.WordxTex";
+            string workPath = Ribbon.settingsBox.workPath + "\\WordxTex";
             latex_style_gen(workPath);
             string TexFile = workPath + "\\" + occupied_id + ".tex";
             __texContent = texCodeBox.Text;
@@ -67,8 +68,8 @@ namespace WordxTex
         private void latex_compile(string cp_param, string OccupiedName)
         {
             //命令准备
-            string Complier = Ribbon.get_param_value(cp_param, "complier") + ".exe";
-            string Grapher = Ribbon.get_param_value(cp_param, "grapher") + ".exe";
+            string Complier = Ribbon.GetFullPath(Ribbon.get_param_value(cp_param, "complier") + ".exe");
+            string Grapher = Ribbon.GetFullPath(Ribbon.get_param_value(cp_param, "grapher") + ".exe");
             string TexFile = workPath + "\\" + OccupiedName + ".tex";
             string OutDviFile = workPath + "\\" + OccupiedName + Ribbon.get_param_value(cp_param, "ctarget");
             string OutImgFile = workPath + "\\" + OccupiedName + Ribbon.get_param_value(cp_param, "gtarget");
@@ -94,127 +95,161 @@ namespace WordxTex
                 new string[] { Complier, Grapher },
                 new string[] { Complier_Args, Grapher_Args },
                 Ribbon.settingsBox.maxRunTimePerProgram);
-            //Ribbon.settingsBox.maxRunTimePerProgramChangeEventHandler += ((maxTimeValue, tr) => CpQueue.maxRunTimePerProgram = (int)maxTimeValue);
             ThreadStart thrdstart = new ThreadStart(CpQueue.Run); //使用另一线程运行
             Thread thrd = new Thread(thrdstart);
-            CpQueue.ProgramsRunLogStepRs += delegate (object logs, EventArgs evt)
+            CpQueue.ProgramsRunLogStepRs += CpQueue_ProgramsRunLogStepRs;
+            CpQueue.ProgramsRunResult += CpQueue_ProgramsRunResult;
+            CpQueue.ProgramsRunCmdLine += CpQueue_ProgramsRunCmdLine;
+            thrd.Start();
+        }
+
+        private void CpQueue_ProgramsRunCmdLine(object pCmdline, EventArgs e)
+        {
+
+            if (pCmdline == null) return;
+            string oLogs = "";
+            try
+            {
+                oLogs = (string)pCmdline;
+            }
+            catch (System.NullReferenceException)
+            {
+                return;
+            }
+            if (oLogs.Length > 0)
             {
                 Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
-                logsbox.Text += "\n" + (string)logs;
-                if (logsbox.Text.Length > 5)
+                logsBox.AppendText((string)pCmdline);
+                logsBox.AppendText("\r\n");
+            }
+        }
+
+        private void CpQueue_ProgramsRunResult(object reports, EventArgs e)
+        {
+            Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
+            Object[] execReports = (Object[])reports;
+            if (cb_AutoClose.Checked) logsBox.Clear();
+            logsBox.AppendText("Runned!\r\n");
+            for (int i = 0; i < execReports.Length; i++)
+            {
+                wTModule.ProgramResult oReport = (wTModule.ProgramResult)execReports[i];
+                if (oReport.exitCode != 0)
                 {
-                    //logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
-                    logsbox.SelectionStart = logsbox.Text.Length;
-                    //logsbox.ScrollToCaret();
+                    //写入日志框
+                    int logsBoxCount = logsBox.Text.Length;
+                    string programExecParam = "[" + (i + 1).ToString() + "/" + execReports.Length + "] Error: " + oReport.execName + " " + oReport.execArgs + "\r\n";
+                    string programExitCodeParam = "Error With Exit Code: " + oReport.exitCode.ToString() + "\r\n";
+                    logsBox.AppendText(programExecParam);
+                    logsBox.AppendText(programExitCodeParam);
+                    logsBox.AppendText(oReport.execLogs);
+                    //错误运行
+                    logsBox.Select(logsBoxCount, programExecParam.Length + programExitCodeParam.Length - 4);
+                    logsBox.SelectionColor = Color.Red; //标红
+                    logsBox.SelectionStart = logsBoxCount;
+                    logsBox.ScrollToCaret(); //移动光标到错误位置
+                    Cursor = Cursors.Default;
+                    btn_gen.Enabled = true;//恢复按钮
+                    return; //停止运行
                 }
-            };
-            CpQueue.ProgramsRunResult += delegate (object reports, EventArgs ev) //接收运行结果
+            }
+            if (!File.Exists(__targetImgFile))
             {
-                Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
-                Object[] execReports = (Object[])reports;
-                logsbox.Clear();
                 for (int i = 0; i < execReports.Length; i++)
                 {
                     wTModule.ProgramResult oReport = (wTModule.ProgramResult)execReports[i];
                     //写入日志框
-                    int logsBoxCount = logsbox.Text.Length;
-                    string programExecParam = "[" + (i + 1).ToString() + "/" + execReports.Length + "] " + oReport.execName + " " + oReport.execArgs;
-                    logsbox.Text += programExecParam + "\n";
-                    logsbox.Text += oReport.execLogs;
-                    if (oReport.exitCode != 0)
-                    {
-                        //错误运行
-                        logsbox.Select(logsBoxCount, programExecParam.Length);
-                        logsbox.SelectionColor = Color.Red; //标红
-                        logsbox.SelectionStart = logsBoxCount;
-                        logsbox.ScrollToCaret(); //移动光标到错误位置
-                        btn_gen.Enabled = true;//恢复按钮
-                        return; //停止运行
-                    }
-                    if (logsbox.Text.Length > 5)
-                    {
-                        logsbox.Select(logsbox.Text.Length, logsbox.Text.Length);
-                        logsbox.ScrollToCaret();
-                    }
-                }
-                Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-                //完成运行队列
-                int shapePosition = 0;
-                InlineShape inDocPic;
+                    int logsBoxCount = logsBox.Text.Length;
+                    logsBox.AppendText("[" + (i + 1).ToString() + "/" + execReports.Length + "] Error: " + oReport.execName + " " + oReport.execArgs + "\r\n");
+                    logsBox.AppendText("Error With Exit Code: " + oReport.exitCode.ToString() + "\r\n" + oReport.execLogs);
+                };
+                logsBox.AppendText("Failed! File Not Found: \r\n" + __targetImgFile);
+                Cursor = Cursors.Default;
+                logsBox.ForeColor = Color.Red; //标红
+                btn_gen.Enabled = true;//恢复按钮
+                return; //停止运行
+            }
+            logsBox.Select(logsBox.Text.Length, 0);
+            logsBox.ScrollToCaret();
+            Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+            //完成运行队列
+            int shapePosition = 0;
+            InlineShape inDocPic;
+            if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
+            {
+                shapePosition = ThisDoc.Application.Selection.Font.Position;
+                ThisDoc.Application.Selection.Delete(); //删除选中 的数据
+            }
+            if (Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "grapher") == (string)"dvipng")
+            {
+                //dvipng 产出PNG为72dpi,将生成的png图片转换分辨率
+                string pngvRes = Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "pngvRes");
+                int pngdpi = int.Parse(pngvRes);
+                Bitmap bMp = (Bitmap)Image.FromFile(__targetImgFile);
+                bMp.SetResolution(pngdpi, pngdpi);
+                string R_imgFile = workPath + "\\param" + "_" + pngvRes + ".png";
+                bMp.Save(R_imgFile, ImageFormat.Png);
+                bMp.Dispose();
+                inDocPic = ThisDoc.InlineShapes.AddPicture(R_imgFile);
+            }
+            else
+            {
+                inDocPic = ThisDoc.InlineShapes.AddPicture(__targetImgFile);//svg直接插入
+            }
+            inDocPic.AlternativeText = __texContent; //写入Tex数据
+            inDocPic.Select(); //选择新插入的图片
+            ThisDoc.Application.Selection.Font.Position = shapePosition; //基线还原
+            if (cb_AutoClose.Checked) //检测自动关闭
+                this.Close();
+            Cursor = Cursors.Default;
+            btn_gen.Enabled = true; //复原按钮
+            return;
+        }
 
-                if (ThisDoc.Application.Selection.Type != WdSelectionType.wdSelectionIP)
-                {
-                    shapePosition = ThisDoc.Application.Selection.Font.Position;
-                    ThisDoc.Application.Selection.Delete(); //删除选中 的数据
-                }
-                if (!File.Exists(__targetImgFile))
-                {
-                    logsbox.Select(0, logsbox.Text.Length - 1);
-                    logsbox.ForeColor = Color.Red; //标红
-                    btn_gen.Enabled = true;//恢复按钮
-                    return; //停止运行
-                }
-                if (Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "grapher") == (string)"dvipng")
-                {
-                    //dvipng 产出PNG为72dpi,将生成的png图片转换分辨率
-                    string pngvRes = Ribbon.get_param_value(Ribbon.settingsBox.program_exec_params, "pngvRes");
-                    int pngdpi = int.Parse(pngvRes);
-                    Bitmap bMp = (Bitmap)Image.FromFile(__targetImgFile);
-                    bMp.SetResolution(pngdpi, pngdpi);
-                    string R_imgFile = workPath + "\\param" + "_" + pngvRes + ".png";
-                    bMp.Save(R_imgFile, ImageFormat.Png);
-                    bMp.Dispose();
-                    inDocPic = ThisDoc.InlineShapes.AddPicture(R_imgFile);
-                }
-                else
-                {
-                    inDocPic = ThisDoc.InlineShapes.AddPicture(__targetImgFile);//svg直接插入
-                }
-                inDocPic.AlternativeText = __texContent; //写入Tex数据
-                inDocPic.Select(); //选择新插入的图片
-                ThisDoc.Application.Selection.Font.Position = shapePosition; //基线还原
-                if (cb_AutoClose.Checked) //检测自动关闭
-                    this.Close();
-                btn_gen.Enabled = true; //复原按钮
+        private void CpQueue_ProgramsRunLogStepRs(object logs, EventArgs e)
+        {
+            if ((logs == null) || !cb_AutoClose.Checked) return;
+            string oLogs = "";
+            try
+            {
+                oLogs = (string)logs;
+            }
+            catch (System.NullReferenceException)
+            {
                 return;
-            };
-            thrd.Start();
+            }
+            if (oLogs.Length > 0)
+            {
+                Control.CheckForIllegalCrossThreadCalls = false; //跨线程操作
+                logsBox.AppendText("\r\n");
+                logsBox.AppendText((string)logs);
+            }
         }
 
         private void LaTexEdt_Load(object sender, EventArgs e)
         {
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
+            this.FormClosed += ((sndr, ev) => Globals.ThisAddIn.Application.Activate());
             if (false == System.IO.Directory.Exists(workPath))
                 System.IO.Directory.CreateDirectory(workPath);
-            try
+            if (Ribbon.settingsBox.workPathAutoClean)
             {
-                for (int i = 0; i < Directory.GetFiles(workPath).ToList().Count; i++)
-                    File.Delete(Directory.GetFiles(workPath)[i]); //清空临时目录
+                try
+                {
+                    System.Collections.Generic.List<string> FileList = Directory.GetFiles(workPath).ToList();
+                    for (int i = 0; i < FileList.ToList().Count; i++) File.Delete(FileList[i]);
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Some files in " + workPath + " were ocuupied, result may unsatisfy.", "Warning!!");
+                };
             }
-            catch (IOException)
-            {
-                MessageBox.Show("Some files in " + workPath + " were ocuupied, result may unsatisfy.", "Warning!!");
-            };
             latex_style_gen(workPath); //生成自动模板
-            this.FormClosing += LaTexEdt_FormClosing;
             this.Deactivate += LaTexEdt_Deactivate;
-            this.Activated += delegate (object RSender, EventArgs me)
-            {
-                this.Opacity = 1;
-            };
+            this.FormClosing += ((RSender, me) => this.Deactivate -= LaTexEdt_Deactivate);
+            this.Activated += ((RSender, me) => this.Opacity = 1);
         }
 
-        private void LaTexEdt_Deactivate(object sender, EventArgs e)
-        {
-            this.Opacity = 0.5;
-            //throw new NotImplementedException();
-        }
-
-        private void LaTexEdt_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.Deactivate -= LaTexEdt_Deactivate;
-            //throw new NotImplementedException();
-        }
+        private void LaTexEdt_Deactivate(object sender, EventArgs e) => this.Opacity = 0.5;
 
         private void latex_style_gen(string destDir)
         {
@@ -272,7 +307,7 @@ namespace WordxTex
         private void btn_nxtTeX_Click(object sender, EventArgs e)
         {
             Microsoft.Office.Interop.Word.Document ThisDoc = Globals.ThisAddIn.Application.ActiveDocument;
-            Range TexItem = null;
+            Microsoft.Office.Interop.Word.Range TexItem = null;
             ThisDoc.Application.Selection.SetRange(ThisDoc.Application.Selection.Start, ThisDoc.Application.Selection.End + 1);
             TexItem = ThisDoc.Application.Selection.GoToNext(WdGoToItem.wdGoToGraphic);
             TexItem.SetRange(TexItem.Start, TexItem.End + 1);
@@ -294,9 +329,11 @@ namespace WordxTex
 
         }
 
-        private void logsbox_TextChanged(object sender, EventArgs e)
+        private void logsBox_TextChanged(object sender, EventArgs e)
         {
-            logsbox.Select(logsbox.Text.Length, 0);
+            logsBox.Select(logsBox.Text.Length, 0);
         }
+
+
     }
 }

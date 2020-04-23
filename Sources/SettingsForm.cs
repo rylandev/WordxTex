@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WordxTex
@@ -24,6 +25,7 @@ namespace WordxTex
         public SettingsForm()
         {
             InitializeComponent();
+            string tmpPath = System.Environment.GetEnvironmentVariable("TEMP");
             //防止终止该窗口
             this.FormClosing += delegate (object sender, FormClosingEventArgs e)
             {
@@ -37,6 +39,30 @@ namespace WordxTex
             //读出配置文件
             try
             {
+                GetPrivateProfileString("Debugging", "debugMode", "", tempIniValue, 255, iniFile);
+                if ((tempIniValue.Length != 0) && (bool.Parse(tempIniValue.ToString())) == true)
+                {
+                    ComboTreeNode comboTreeNodeCpTest = new ComboTreeNode();
+                    comboTreeNodeCpTest.Expanded = false;
+                    comboTreeNodeCpTest.ForeColor = System.Drawing.Color.Empty;
+                    comboTreeNodeCpTest.Name = "winver_test";
+                    comboTreeNodeCpTest.Text = "winver_test";
+                    comboTreeNodeCpTest.Tag = "complier=winver;cp_arg=;ctarget=.xdv;ctip=.tex->.xdv";
+                    comboTreeNodeCpTest.ToolTip = null;
+                    ComboTreeNode comboTreeNodeGrTest = new ComboTreeNode();
+                    comboTreeNodeGrTest.Expanded = false;
+                    comboTreeNodeGrTest.ForeColor = System.Drawing.Color.Empty;
+                    comboTreeNodeGrTest.Name = "grapher_tmpe";
+                    comboTreeNodeGrTest.Text = "grapher_tmpe";
+                    comboTreeNodeGrTest.Tag = "grapher=winver;gr_arg=;gtarget=.svg;gaccept=.dvi,.xdv;gtip=->.svg";
+                    comboTreeNodeGrTest.ToolTip = null;
+                    ctb_compiler.Nodes.Add(comboTreeNodeCpTest);
+                    ctb_graphbox.Nodes.Add(comboTreeNodeGrTest);
+                }
+                else
+                {
+                    WritePrivateProfileString("Debugging", "debugMode", "False", iniFile);
+                }
                 GetPrivateProfileString("Gener", "Complier", "", tempIniValue, 255, iniFile);
                 if (tempIniValue.ToString().Length > 1)
                     ctb_compiler.Path = tempIniValue.ToString();
@@ -46,9 +72,18 @@ namespace WordxTex
                 GetPrivateProfileString("Style", "Font", "", tempIniValue, 255, iniFile);
                 if (tempIniValue.ToString().Length > 1)
                     cb_fonts.Path = tempIniValue.ToString();
+                GetPrivateProfileString("Option", "autoClean", "", tempIniValue, 255, iniFile);
+                if (tempIniValue.ToString().Length > 1)
+                    ckb_autoclean.Checked = bool.Parse(tempIniValue.ToString());
                 GetPrivateProfileString("Option", "showLabel", "", tempIniValue, 255, iniFile);
                 if (tempIniValue.ToString().Length > 1)
                     chb_show_fl.Checked = bool.Parse(tempIniValue.ToString());
+                GetPrivateProfileString("Option", "workPath", "", tempIniValue, 255, iniFile);
+                if (tempIniValue.ToString().Length > 1 && Directory.Exists(tempIniValue.ToString()))
+                {
+                    tb_wkdir.Text = tempIniValue.ToString();
+                }
+
                 GetPrivateProfileString("Gener", "Time", "", tempIniValue, 255, iniFile);
                 if (tempIniValue.ToString().Length > 1)
                     sb_execPerPrgTime.Value = int.Parse(tempIniValue.ToString());
@@ -61,44 +96,13 @@ namespace WordxTex
             }
         }
         public bool showLabel => chb_show_fl.Checked;
+        public string workPath => tb_wkdir.Text;
+        public bool workPathAutoClean => ckb_autoclean.Checked;
         public int maxRunTimePerProgram => Convert.ToInt32(sb_execPerPrgTime.Value);
         public string fontFx => (string)cb_fonts.SelectedNode.Tag;
         public string program_exec_params => (string)ctb_compiler.SelectedNode.Tag + ";" + (string)ctb_graphbox.SelectedNode.Tag;
         private void SettingsBox_Load(object sender, EventArgs e)
         {
-            try
-            {
-                GetPrivateProfileString("Debugging", "DebugMode", "", tempIniValue, 255, iniFile);
-                if (bool.Parse(tempIniValue.ToString()) == true)
-                {
-                    ComboTreeNode comboTreeNode25 = new ComboTreeNode();
-                    comboTreeNode25.Expanded = false;
-                    comboTreeNode25.ForeColor = System.Drawing.Color.Empty;
-                    comboTreeNode25.Name = "winver_test";
-                    comboTreeNode25.Text = "winver_test";
-                    comboTreeNode25.Tag = "complier=winver;cp_arg=;ctarget=.xdv;ctip=.tex->.xdv";
-                    comboTreeNode25.ToolTip = null;
-                    ComboTreeNode comboTreeNode31 = new ComboTreeNode();
-                    comboTreeNode31.Expanded = false;
-                    comboTreeNode31.ForeColor = System.Drawing.Color.Empty;
-                    comboTreeNode31.Name = "grapher_tmpe";
-                    comboTreeNode31.Text = "grapher_tmpe";
-                    comboTreeNode31.Tag = "grapher=winver;gr_arg=;gtarget=.svg;gaccept=.dvi,.xdv;gtip=->.svg";
-                    comboTreeNode31.ToolTip = null;
-                    ctb_compiler.Nodes.Add(comboTreeNode25);
-                    ctb_graphbox.Nodes.Add(comboTreeNode31);
-                }
-                else
-                {
-                    WritePrivateProfileString("Debugging", "DebugMode", "False", iniFile);
-                }
-            }
-            catch (ArgumentException)
-            {
-                //配置文件出错则删除配置文件
-                if (File.Exists(iniFile))
-                    File.Delete(iniFile);
-            }
             ctb_compiler.SelectedNodeChanged += ctb_gener_SelectedNodeChanged;
             ctb_graphbox.SelectedNodeChanged += ctb_gener_SelectedNodeChanged;
             generChangeEventHandler((string)ctb_compiler.SelectedNode.Tag + ";" + (string)ctb_graphbox.SelectedNode.Tag, new EventArgs());
@@ -124,6 +128,47 @@ namespace WordxTex
         {
             maxRunTimePerProgramChangeEventHandler(sb_execPerPrgTime.Value, new EventArgs());
             WritePrivateProfileString("Gener", "Time", sb_execPerPrgTime.Value.ToString(), iniFile);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (Directory.Exists(tb_wkdir.Text))
+                WritePrivateProfileString("Option", "workPath", tb_wkdir.Text, iniFile);
+        }
+
+        private void ckb_autoclean_CheckedChanged(object sender, EventArgs e)
+        {
+            WritePrivateProfileString("Option", "autoClean", ckb_autoclean.Checked.ToString(), iniFile);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DirSelectDialog.Reset();
+            DirSelectDialog.SelectedPath = tb_wkdir.Text;
+            DirSelectDialog.ShowDialog();
+            if (DirSelectDialog.SelectedPath.Length > 0)
+                tb_wkdir.Text = DirSelectDialog.SelectedPath;
+        }
+
+        private void btn_clean_cache_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Delete all files in: " + tb_wkdir.Text + "\\WordxTex", "confirm", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                try
+                {
+                    System.Collections.Generic.List<string> FileList = Directory.GetFiles(tb_wkdir.Text + "\\WordxTex").ToList();
+                    for (int i = 0; i < FileList.ToList().Count; i++) File.Delete(FileList[i]);
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Some files in " + workPath + " were ocuupied, result may unsatisfy.", "Warning!!");
+                };
+            }
+        }
+
+        private void ctb_compiler_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

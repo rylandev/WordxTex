@@ -101,6 +101,8 @@ namespace WordxTex
             //    check_programs();
             //};
 
+            Globals.ThisAddIn.Application.WindowBeforeDoubleClick += Application_WindowBeforeDoubleClick;
+
             Globals.ThisAddIn.Application.WindowSelectionChange += delegate (Selection Sel)
             {
                 if (programCheck == false)
@@ -115,6 +117,18 @@ namespace WordxTex
                 }
                 editContentCheck(Sel);
             };
+        }
+
+        private void Application_WindowBeforeDoubleClick(Selection Sel, ref bool Cancel)
+        {
+            InlineShapes SelectedObj = Sel.InlineShapes;
+            if (SelectedObj.Count == 0)
+                return;
+            InlineShape SelectedObjFirst = SelectedObj[1];
+            if (!SelectedObjFirst.AlternativeText.Contains("WordxTex_TexContent"))
+                return;
+            LaTexEdt CodeEditor = new LaTexEdt(false, SelectedObjFirst.AlternativeText, 0, 0);
+            CodeEditor.ShowDialog();
         }
 
         private void SettingsBox_Intl(bool form_terminated)

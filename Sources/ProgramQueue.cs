@@ -9,6 +9,7 @@ namespace WordxTex.wTModule
     {
         public event EventHandler ProgramsRunResult;
         public event EventHandler ProgramsRunLogStepRs;
+        public event EventHandler ProgramsRunCmdLine;
         int CurProgramNum = 0;
         int MaxProgramNum = 0;
         string[] uePrograms = new string[] { };
@@ -62,15 +63,18 @@ namespace WordxTex.wTModule
             object[] prResult = new object[uePrograms.Length];
             for (int i = 0; i < uePrograms.Length; i++)
             {
+                ProgramsRunCmdLine(
+                    "[" + (CurProgramNum + 1).ToString() + "/" + (MaxProgramNum + 1).ToString() + "] " +
+                    uePrograms[CurProgramNum] + " " + ueProgramsArgs[CurProgramNum], new EventArgs());
                 ProgramResult prgResult = exeProcessWithRslt();
                 prResult[i] = prgResult;
                 if (prgResult.exitCode != 0) break; //错误就停止
-                ExecProgramIteration();
+                execProgramIteration();
             }
             ProgramsRunResult(prResult, new EventArgs());
 
         }
-        public string[] ExecProgramIteration()
+        public string[] execProgramIteration()
         {
             if (CurProgramNum > MaxProgramNum)
                 return new string[] { "", "" };
@@ -107,10 +111,6 @@ namespace WordxTex.wTModule
                     }
                     catch (System.Exception) { };
                 };
-                //System.Windows.Forms.Timer execTimer = new System.Windows.Forms.Timer();
-                //execTimer.Elapsed += ((timer_tick, te) => MessageBox.Show("TT"));
-                //execTimer.Tick += ((timer_tick, te) => Rprocess.Kill());
-                //execTimer.Tick += ExecTimer_Tick;
                 Rprocess.StartInfo.UseShellExecute = false; //不使用CMD
                 Rprocess.StartInfo.CreateNoWindow = true; //不显示黑色窗口
                 Rprocess.OutputDataReceived += delegate (object sender, DataReceivedEventArgs e)
@@ -159,61 +159,6 @@ namespace WordxTex.wTModule
             }
         }
 
-        private void ExecTimer_Tick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void execProcess()
-        {
-            string uelogs = "";
-            string execPath = uePrograms[CurProgramNum];
-            string args = ueProgramsArgs[CurProgramNum];
-            using (Process Rprocess = new Process())
-            {
-                Rprocess.StartInfo.UseShellExecute = false; //不使用CMD
-                Rprocess.StartInfo.CreateNoWindow = true; //不显示黑色窗口
-                Rprocess.OutputDataReceived += delegate (object sender, DataReceivedEventArgs e)
-                {
-                    string logs = "";
-                    try
-                    {
-                        logs = e.Data;
-                    }
-                    catch (System.Exception)
-                    {
-                    }
-                    uelogs = uelogs + "\n" + logs;
-                };
-                Rprocess.StartInfo.RedirectStandardOutput = true;
-                Rprocess.ErrorDataReceived += delegate (object sender, DataReceivedEventArgs e)
-                {
-                    string logs = "";
-                    try
-                    {
-                        logs = e.Data;
-                    }
-                    catch (System.Exception)
-                    {
-                    }
-                    uelogs = uelogs + "\n" + logs;
-                };
-                Rprocess.StartInfo.RedirectStandardError = true;
-                Rprocess.StartInfo.FileName = execPath;
-                Rprocess.StartInfo.Arguments = args;
-                Rprocess.EnableRaisingEvents = true;
-                if (!Rprocess.Start())
-                {
-                    return;
-                }
-                Rprocess.BeginOutputReadLine();
-                Rprocess.BeginErrorReadLine();
-                Rprocess.WaitForExit();
-                ProgramResult pResult = new ProgramResult(execPath, args, Rprocess.ExitCode, Terminated(), MaxProgramNum - CurProgramNum);
-                pResult.execLogs = uelogs;
-                ProgramsRunResult(pResult, new EventArgs());
-            }
-        }
     }
 
     public class ProgramResult : System.Object
